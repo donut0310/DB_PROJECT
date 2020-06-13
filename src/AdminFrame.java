@@ -2,7 +2,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+import java.sql.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,20 +10,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class AdminFrame implements ActionListener {
-	   JButton resetBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
-	   JPanel searchBtnPn, listPn, btnPn;
-	   GridLayout btns;
-	   JTextArea txtResult;
-		
-	   public AdminFrame() {
-		   init();
-	   }
-	   
-	   public void init() {
+	    JButton resetBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
+	    JPanel searchBtnPn, listPn, btnPn;
+	    GridLayout btns;
+	    JTextArea txtResult;
+		 
+	    public AdminFrame() {
+		    init();
+	    }
+	    
+	    public void init() {
 		   JFrame adminFrame = new JFrame();
 		   adminFrame.setVisible(true);
 		   adminFrame.setBounds(200, 200, 1200, 550); // 가로위치,세로위치,가로길이,세로길이
 		   adminFrame.setTitle("관리자 접속");
+		   adminFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 		   searchBtnPn = new JPanel();
 		   listPn = new JPanel();
 		   btnPn = new JPanel();
@@ -68,7 +70,11 @@ public class AdminFrame implements ActionListener {
 	   }
 	   
 	   public void actionPerformed(ActionEvent e) {
+			Connection con = Start_main.con;
+			Statement stmt = Start_main.stmt;
+			ResultSet rs = Start_main.rs;
 			try {				
+				stmt = con.createStatement();
 				String resetTable;
 				String getCompanies = "SELECT * FROM Companies";
 				// String getCapingCars = "SELECT * FROM CampingCars";
@@ -77,33 +83,43 @@ public class AdminFrame implements ActionListener {
 				
 				if(e.getSource() == resetBtn){
 					String querySafeModeOff = "SET SQL_SAFE_UPDATES=0;";
-					Start_main.stmt.executeUpdate(querySafeModeOff);
+					stmt.executeUpdate(querySafeModeOff);
 					// 테이블 존재시 삭제
 					for(int i=0;i<7;i++){
-						resetTable = "drop table if exists " + createTableQuery.tableName[i];
-						Start_main.stmt.executeUpdate(resetTable);
+						if(createTableQuery.tableName[i]=="Companies"){
+							stmt.executeUpdate("SET foreign_key_checks = 0");
+							stmt.executeUpdate("drop table if exists Companies");
+							stmt.executeUpdate("SET foreign_key_checks = 1");
+						}
+						else{
+							resetTable = "drop table if exists " + createTableQuery.tableName[i];
+							stmt.executeUpdate(resetTable);
+						}
 					}
 					//테이블 생성
 					for(int i=0;i<4;i++){
-						Start_main.stmt.executeUpdate(createTableQuery.create[i]);
-					 }
+						// System.out.println(Start_main.stmt.executeUpdate(createTableQuery.create[i]));
+						stmt.executeUpdate(createTableQuery.create[i]);
+						// Start_main.rs = Start_main.stmt.executeQuery("Select * from "+createTableQuery.tableName[i]);
+						// System.out.println(Start_main.rs.getString(0));
+					}
 					 //데이터 추가
 					for(int i=0;i<4;i++){
-						Start_main.stmt.executeUpdate(createTableQuery.insertSql[i]);
-						System.out.println(i);
+						stmt.executeUpdate(createTableQuery.insertSql[i]);
 					}
 				}
 				else if(e.getSource() == companyBtn) {
 					listPn.removeAll();
 	            	btnPn.removeAll();
 	            	
-	            	Companies a = new Companies(btnPn);
+					Companies a = new Companies(btnPn);
+					
 	            	txtResult.setText("");
 	            	txtResult.setText("test");
-	            	Start_main.rs = Start_main.stmt.executeQuery(getCompanies);
-	            	while(Start_main.rs.next()) {
-	            		String str = Start_main.rs.getInt(1) + " " + Start_main.rs.getString(2) + " " + Start_main.rs.getString(3) +
-	            				" " + Start_main.rs.getString(4) + " " + Start_main.rs.getString(5) + " " + Start_main.rs.getString(6) + "\n";
+	            	rs = stmt.executeQuery(getCompanies);
+					while(rs.next()) {
+	            		String str = rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) +
+	            				" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + "\n";
 	            		txtResult.append(str);
 	            	}
 	            	listPn.revalidate();
@@ -149,12 +165,15 @@ public class AdminFrame implements ActionListener {
 			 } 
 			finally {
 				try {
-					if (Start_main.rs != null)
-						Start_main.rs.close();
-					if (Start_main.stmt != null)
-						Start_main.stmt.close();
-					if (Start_main.con != null)
-						Start_main.con.close();
+					rs.close();
+					stmt.close();
+					con.close();
+					// if (rs != null)
+					// 	rs.close();
+					// if (stmt != null)
+					// 	stmt.close();
+					// if (con != null)
+					// 	con.close();
 				} catch (Exception e3) {
 					// TODO: handle exception
 				}

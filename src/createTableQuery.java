@@ -2,7 +2,7 @@ public class createTableQuery {
     static String tableName[] = {"Companies","CampingCars","Customers","ServiceCenters",
 					"CarRentInfo","CarCheckList","RepairInfo"};
     static String create[] = {
-        "CREATE TABLE `madang`.`Companies` ("
+        "CREATE TABLE IF NOT EXISTS`madang`.`Companies` ("
         +"`id` INT NOT NULL AUTO_INCREMENT,"
         +"`name` VARCHAR(45) NULL,"
         +"`address` VARCHAR(45) NULL,"
@@ -12,7 +12,7 @@ public class createTableQuery {
         +"PRIMARY KEY (`id`))"
         +"ENGINE = InnoDB;",
 
-        "CREATE TABLE `madang`.`CampingCars` ("
+        "CREATE TABLE IF NOT EXISTS `madang`.`CampingCars` ("
         +"`id` INT NOT NULL AUTO_INCREMENT,"
         +"`name` VARCHAR(45) NULL,"
         +"`carNumber` VARCHAR(45) NULL,"
@@ -32,7 +32,7 @@ public class createTableQuery {
         +"ON UPDATE NO ACTION)"
         +"ENGINE = InnoDB;",
 
-        "CREATE TABLE `madang`.`ServiceCenters` ("
+        "CREATE TABLE IF NOT EXISTS `madang`.`ServiceCenters` ("
         +"`id` INT NOT NULL AUTO_INCREMENT,"
         +"`name` VARCHAR(45) NULL,"
         +"`address` VARCHAR(45) NULL,"
@@ -42,7 +42,7 @@ public class createTableQuery {
         +"PRIMARY KEY (`id`))"
         +"ENGINE = InnoDB;",
 
-        "CREATE TABLE `madang`.`Customers` ("
+        "CREATE TABLE IF NOT EXISTS `madang`.`Customers` ("
         +"`licenseNum` VARCHAR(45) NOT NULL,"
         +"`name` VARCHAR(45) NULL,"
         +"`address` VARCHAR(45) NULL,"

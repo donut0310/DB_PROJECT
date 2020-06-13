@@ -53,6 +53,7 @@ public class Start_main extends JFrame implements ActionListener {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+
 		try { /* 데이터베이스를 연결하는 과정 */
 			System.out.println("데이터베이스 연결 준비...");
 			Start_main.con = DriverManager.getConnection(url, userid, pwd);
@@ -60,69 +61,43 @@ public class Start_main extends JFrame implements ActionListener {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
-		
-
 	}
 
 	// string 정수 확인 함수
-	public static boolean isNumeric(String string) {
-		boolean isNumber = false;
-		try {
-			Integer.parseInt(string);
-			isNumber = true;
-		} catch (NumberFormatException e) {
+	// public static boolean isNumeric(String string) {
+	// 	boolean isNumber = false;
+	// 	try {
+	// 		Integer.parseInt(string);
+	// 		isNumber = true;
+	// 	} catch (NumberFormatException e) {
 
-		}
-		return isNumber;
-	}
+	// 	}
+	// 	return isNumber;
+	// }
 
-	// string 올바른 날짜 확인 함수
-	public static boolean isDate(String string) {
-		String format = "yyyyMMdd";
-		SimpleDateFormat dateFormatParser = new SimpleDateFormat(format, Locale.KOREA);
-		dateFormatParser.setLenient(false);
-		try {
-			dateFormatParser.parse(string);
-			return true;
-		} catch (Exception Ex) {
-			return false;
-		}
+	// // string 올바른 날짜 확인 함수
+	// public static boolean isDate(String string) {
+	// 	String format = "yyyyMMdd";
+	// 	SimpleDateFormat dateFormatParser = new SimpleDateFormat(format, Locale.KOREA);
+	// 	dateFormatParser.setLenient(false);
+	// 	try {
+	// 		dateFormatParser.parse(string);
+	// 		return true;
+	// 	} catch (Exception Ex) {
+	// 		return false;
+	// 	}
 
-	}
+	// }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	
-		//  try{
-			
-		// 	stmt = con.createStatement();
-				
-		// 	stmt.executeUpdate("drop database if exists madang");
-		// 	stmt.executeUpdate("create database madang");
-		// 	stmt.executeQuery("use madang");
 			if(e.getSource() == custom) {
-				CustomerFrame a = new CustomerFrame();
+				new CustomerFrame();
 			} 
 			else if(e.getSource() == admin){
-				AdminFrame b = new AdminFrame();
+				new AdminFrame();
 			}
-	// } catch (Exception e2) {
-	//  	System.out.println("쿼리 읽기 실패 :" + e2);
-	// 	} 
-	// //finally {
-	// 	try {
-	// 	   if (rs != null)
-	// 		  rs.close();
-	// 	   if (stmt != null)
-	// 		  stmt.close();
-	// 	   if (con != null)
-	// 		  con.close();
-	// 	} catch (Exception e3) {
-	// 	   // TODO: handle exception
-	// 	}
-	//  }
-}
+	} 
 
 	public static void main(String[] args) {
 		new Start_main();
