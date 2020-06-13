@@ -1,29 +1,19 @@
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class AdminFrame implements ActionListener {
-	   JButton companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
+	   JButton resetBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
 	   JPanel searchBtnPn, listPn, btnPn;
 	   GridLayout btns;
-	   
-	   Connection con;
-		Statement stmt;
-		ResultSet rs;
-		String Driver = "";
-		String url = "jdbc:mysql://localhost:3306/madang?&serverTimezone=Asia/Seoul&useSSL=false";
-		String userid = "madang";
-		String pwd = "madang";
+	   JTextArea txtResult;
 		
 	   public AdminFrame() {
 		   init();
@@ -32,27 +22,37 @@ public class AdminFrame implements ActionListener {
 	   public void init() {
 		   JFrame adminFrame = new JFrame();
 		   adminFrame.setVisible(true);
-		   adminFrame.setBounds(200, 200, 1200, 550); // ∞°∑Œ¿ßƒ°,ºº∑Œ¿ßƒ°,∞°∑Œ±Ê¿Ã,ºº∑Œ±Ê¿Ã
-		   
+		   adminFrame.setBounds(200, 200, 1200, 550); // Í∞ÄÎ°úÏúÑÏπò,ÏÑ∏Î°úÏúÑÏπò,Í∞ÄÎ°úÍ∏∏Ïù¥,ÏÑ∏Î°úÍ∏∏Ïù¥
+		   adminFrame.setTitle("Í¥ÄÎ¶¨Ïûê Ï†ëÏÜç");
 		   searchBtnPn = new JPanel();
 		   listPn = new JPanel();
 		   btnPn = new JPanel();
-		   		   
-		   companyBtn = new JButton("¥Îø© »∏ªÁ");
-		   campingCarsBtn = new JButton("ƒ∑«Œ ƒ´");
-		   customersBtn = new JButton("∞Ì∞¥");
-		   serviceCentersBtn = new JButton("¡§∫Òº“");
+		   txtResult = new JTextArea();
+		   
+		   listPn.add(txtResult);
+		   JTextArea txtResult = new JTextArea(15,50);
+		   txtResult.setEditable(false);
+		   JScrollPane scrollPane = new JScrollPane(txtResult);
+		    
+		   listPn.add("Center",scrollPane);
+		   resetBtn = new JButton("Ï¥àÍ∏∞Ìôî");
+		   companyBtn = new JButton("ÎåÄÏó¨ ÌöåÏÇ¨");
+		   campingCarsBtn = new JButton("Ï∫†Ìïë Ïπ¥");
+		   customersBtn = new JButton("Í≥†Í∞ù");
+		   serviceCentersBtn = new JButton("Ï†ïÎπÑÏÜå");
 		   
 		   companyBtn.addActionListener(this);
 		   campingCarsBtn.addActionListener(this);
 		   customersBtn.addActionListener(this);
 		   serviceCentersBtn.addActionListener(this);
+		   resetBtn.addActionListener(this);
 
 		   JButton s1 = new JButton("search 1");
 		   JButton s2 = new JButton("search 2");
 		   JButton s3 = new JButton("search 3");
 		   JButton s4 = new JButton("search 4");
 		   
+		   searchBtnPn.add(resetBtn);
 		   searchBtnPn.add(companyBtn);
 		   searchBtnPn.add(campingCarsBtn);
 		   searchBtnPn.add(customersBtn);
@@ -68,36 +68,62 @@ public class AdminFrame implements ActionListener {
 	   }
 	   
 	   public void actionPerformed(ActionEvent e) {
-			try { /* µ•¿Ã≈Õ∫£¿ÃΩ∫∏¶ ø¨∞·«œ¥¬ ∞˙¡§ */
-				System.out.println("µ•¿Ã≈Õ∫£¿ÃΩ∫ ø¨∞· ¡ÿ∫Ò...");
-				con = DriverManager.getConnection(url, userid, pwd);
-				System.out.println("µ•¿Ã≈Õ∫£¿ÃΩ∫ ø¨∞· º∫∞¯");
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			try {
-				stmt = con.createStatement();
+			try {				
+				String resetTable;
+				String getCompanies = "SELECT * FROM Companies";
+				// String getCapingCars = "SELECT * FROM CampingCars";
+				// String getCustomers = "SELECT * FROM Customers";
+				// String getServiceCenters = "SELECT * FROM ServiceCenters";
 				
-				if(e.getSource() == companyBtn) {
+				if(e.getSource() == resetBtn){
+					String querySafeModeOff = "SET SQL_SAFE_UPDATES=0;";
+					Start_main.stmt.executeUpdate(querySafeModeOff);
+					// ÌÖåÏù¥Î∏î Ï°¥Ïû¨Ïãú ÏÇ≠Ï†ú
+					for(int i=0;i<7;i++){
+						resetTable = "drop table if exists " + createTableQuery.tableName[i];
+						Start_main.stmt.executeUpdate(resetTable);
+					}
+					//ÌÖåÏù¥Î∏î ÏÉùÏÑ±
+					for(int i=0;i<4;i++){
+						Start_main.stmt.executeUpdate(createTableQuery.create[i]);
+					 }
+					 //Îç∞Ïù¥ÌÑ∞ Ï∂îÍ∞Ä
+					for(int i=0;i<4;i++){
+						Start_main.stmt.executeUpdate(createTableQuery.insertSql[i]);
+						System.out.println(i);
+					}
+				}
+				else if(e.getSource() == companyBtn) {
 					listPn.removeAll();
 	            	btnPn.removeAll();
-	            	Companies a = new Companies(listPn, btnPn);
+	            	
+	            	Companies a = new Companies(btnPn);
+	            	txtResult.setText("");
+	            	txtResult.setText("test");
+	            	Start_main.rs = Start_main.stmt.executeQuery(getCompanies);
+	            	while(Start_main.rs.next()) {
+	            		String str = Start_main.rs.getInt(1) + " " + Start_main.rs.getString(2) + " " + Start_main.rs.getString(3) +
+	            				" " + Start_main.rs.getString(4) + " " + Start_main.rs.getString(5) + " " + Start_main.rs.getString(6) + "\n";
+	            		txtResult.append(str);
+	            	}
+	            	listPn.revalidate();
+	        		listPn.repaint();
 				} 
-				else if(e.getSource() == campingCarsBtn){
-					listPn.removeAll();
-	            	btnPn.removeAll();
-	            	CampingCars a = new CampingCars(listPn, btnPn);
-				}
-				else if(e.getSource() == customersBtn){
-					listPn.removeAll();
-	            	btnPn.removeAll();
-	            	Customers a = new Customers(listPn, btnPn);
-				}
-				else if(e.getSource() == serviceCentersBtn){
-					listPn.removeAll();
-	            	btnPn.removeAll();
-	            	ServiceCenters a = new ServiceCenters(listPn, btnPn);
-				}
+// 				else if(e.getSource() == campingCarsBtn){
+// 					listPn.removeAll();
+// 	            	btnPn.removeAll();
+// 	            	CampingCars a = new CampingCars(listPn, btnPn);
+// 				}
+// 				else if(e.getSource() == customersBtn){
+// 					listPn.removeAll();
+// 	            	btnPn.removeAll();
+// 	            	Customers a = new Customers(listPn, btnPn);
+// 				}
+// 				else if(e.getSource() == serviceCentersBtn){
+// 					listPn.removeAll();
+// 	            	btnPn.removeAll();
+// 	            	ServiceCenters a = new ServiceCenters(listPn, btnPn);
+// 			 	}
 //				else if(e.getSource() == s1){
 //					listPn.removeAll();
 //	            	btnPn.removeAll();
@@ -118,18 +144,17 @@ public class AdminFrame implements ActionListener {
 //	            	btnPn.removeAll();
 //	            	ServiceCenters a = new ServiceCenters(listPn, btnPn);
 //				}
-				
-
 			} catch (Exception e2) {
-				System.out.println("ƒı∏Æ ¿–±‚ Ω«∆– :" + e2);
-			} finally {
+				System.out.println("ÏøºÎ¶¨ ÏùΩÍ∏∞ Ïã§Ìå® :" + e2);
+			 } 
+			finally {
 				try {
-					if (rs != null)
-						rs.close();
-					if (stmt != null)
-						stmt.close();
-					if (con != null)
-						con.close();
+					if (Start_main.rs != null)
+						Start_main.rs.close();
+					if (Start_main.stmt != null)
+						Start_main.stmt.close();
+					if (Start_main.con != null)
+						Start_main.con.close();
 				} catch (Exception e3) {
 					// TODO: handle exception
 				}

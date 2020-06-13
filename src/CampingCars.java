@@ -12,28 +12,28 @@ public class CampingCars {
 	    
 		listPn.add("Center",scrollPane);
 		
-		JButton submitBtn = new JButton("ÀÔ·Â");
-		JButton updateBtn = new JButton("º¯°æ");
+		JButton submitBtn = new JButton("ì…ë ¥");
+		JButton updateBtn = new JButton("ë³€ê²½");
 		
-		JTextField input1 = new JTextField("Ä·ÇÎÄ« ÀÌ¸§");
-		JTextField input2 = new JTextField("Ä·ÇÎÄ« Â÷·®¹øÈ£");
-		JTextField input3 = new JTextField("Ä·ÇÎÄ« ½ÂÂ÷ ÀÎ¿ø ¼ö");
-		JTextField input4 = new JTextField("Ä·ÇÎÄ« Á¦Á¶ È¸»ç");
-		JTextField input5 = new JTextField("Ä·ÇÎÄ« Á¦Á¶ ¿¬µµ");
-		JTextField input6 = new JTextField("Ä·ÇÎÄ« ´©Àû ÁÖÈ¾°Å¸®");
-		JTextField input7 = new JTextField("Ä·ÇÎÄ« ´ë¿© ºñ¿ë");
-		JTextField input8 = new JTextField("Ä·ÇÎÄ« ´ë¿© È¸»ç ID");
-		JTextField input9 = new JTextField("Ä·ÇÎÄ« µî·Ï ÀÏÀÚ");
+		JTextField input1 = new JTextField("ìº í•‘ì¹´ ì´ë¦„");
+		JTextField input2 = new JTextField("ìº í•‘ì¹´ ì°¨ëŸ‰ë²ˆí˜¸");
+		JTextField input3 = new JTextField("ìº í•‘ì¹´ ìŠ¹ì°¨ ì¸ì› ìˆ˜");
+		JTextField input4 = new JTextField("ìº í•‘ì¹´ ì œì¡° íšŒì‚¬");
+		JTextField input5 = new JTextField("ìº í•‘ì¹´ ì œì¡° ì—°ë„");
+		JTextField input6 = new JTextField("ìº í•‘ì¹´ ëˆ„ì  ì£¼íš¡ê±°ë¦¬");
+		JTextField input7 = new JTextField("ìº í•‘ì¹´ ëŒ€ì—¬ ë¹„ìš©");
+		JTextField input8 = new JTextField("ìº í•‘ì¹´ ëŒ€ì—¬ íšŒì‚¬ ID");
+		JTextField input9 = new JTextField("ìº í•‘ì¹´ ë“±ë¡ ì¼ì");
 		
-		JTextField update1 = new JTextField("Ä·ÇÎÄ« ÀÌ¸§");
-		JTextField update2 = new JTextField("Ä·ÇÎÄ« Â÷·®¹øÈ£");
-		JTextField update3 = new JTextField("Ä·ÇÎÄ« ½ÂÂ÷ ÀÎ¿ø ¼ö");
-		JTextField update4 = new JTextField("Ä·ÇÎÄ« Á¦Á¶ È¸»ç");
-		JTextField update5 = new JTextField("Ä·ÇÎÄ« Á¦Á¶ ¿¬µµ");
-		JTextField update6 = new JTextField("Ä·ÇÎÄ« ´©Àû ÁÖÈ¾°Å¸®");
-		JTextField update7 = new JTextField("Ä·ÇÎÄ« ´ë¿© ºñ¿ë");
-		JTextField update8 = new JTextField("Ä·ÇÎÄ« ´ë¿© È¸»ç ID");
-		JTextField update9 = new JTextField("Ä·ÇÎÄ« µî·Ï ÀÏÀÚ");
+		JTextField update1 = new JTextField("ìº í•‘ì¹´ ì´ë¦„");
+		JTextField update2 = new JTextField("ìº í•‘ì¹´ ì°¨ëŸ‰ë²ˆí˜¸");
+		JTextField update3 = new JTextField("ìº í•‘ì¹´ ìŠ¹ì°¨ ì¸ì› ìˆ˜");
+		JTextField update4 = new JTextField("ìº í•‘ì¹´ ì œì¡° íšŒì‚¬");
+		JTextField update5 = new JTextField("ìº í•‘ì¹´ ì œì¡° ì—°ë„");
+		JTextField update6 = new JTextField("ìº í•‘ì¹´ ëˆ„ì  ì£¼íš¡ê±°ë¦¬");
+		JTextField update7 = new JTextField("ìº í•‘ì¹´ ëŒ€ì—¬ ë¹„ìš©");
+		JTextField update8 = new JTextField("ìº í•‘ì¹´ ëŒ€ì—¬ íšŒì‚¬ ID");
+		JTextField update9 = new JTextField("ìº í•‘ì¹´ ë“±ë¡ ì¼ì");
 		
 		btnPn.setLayout(new GridLayout(2,10)); 
 		

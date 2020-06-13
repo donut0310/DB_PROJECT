@@ -12,20 +12,20 @@ public class Customers {
 	    
 		listPn.add("Center",scrollPane);
 		
-		JButton submitBtn = new JButton("ÀÔ·Â");
-		JButton updateBtn = new JButton("º¯°æ");
+		JButton submitBtn = new JButton("ì…ë ¥");
+		JButton updateBtn = new JButton("ë³€ê²½");
 		
-		JTextField input1 = new JTextField("¿îÀü ¸éÇãÁõ ¹øÈ£");
-		JTextField input2 = new JTextField("°í°´¸í");
-		JTextField input3 = new JTextField("°í°´ ÁÖ¼Ò");
-		JTextField input4 = new JTextField("°í°´ ÀüÈ­¹øÈ£");
-		JTextField input5 = new JTextField("°í°´ ÀÌ¸ŞÀÏ");
+		JTextField input1 = new JTextField("ìš´ì „ ë©´í—ˆì¦ ë²ˆí˜¸");
+		JTextField input2 = new JTextField("ê³ ê°ëª…");
+		JTextField input3 = new JTextField("ê³ ê° ì£¼ì†Œ");
+		JTextField input4 = new JTextField("ê³ ê° ì „í™”ë²ˆí˜¸");
+		JTextField input5 = new JTextField("ê³ ê° ì´ë©”ì¼");
 		
-		JTextField update1 = new JTextField("¿îÀü ¸éÇãÁõ ¹øÈ£");
-		JTextField update2 = new JTextField("°í°´¸í");
-		JTextField update3 = new JTextField("°í°´ ÁÖ¼Ò");
-		JTextField update4 = new JTextField("°í°´ ÀüÈ­¹øÈ£");
-		JTextField update5 = new JTextField("°í°´ ÀÌ¸ŞÀÏ");
+		JTextField update1 = new JTextField("ìš´ì „ ë©´í—ˆì¦ ë²ˆí˜¸");
+		JTextField update2 = new JTextField("ê³ ê°ëª…");
+		JTextField update3 = new JTextField("ê³ ê° ì£¼ì†Œ");
+		JTextField update4 = new JTextField("ê³ ê° ì „í™”ë²ˆí˜¸");
+		JTextField update5 = new JTextField("ê³ ê° ì´ë©”ì¼");
 		
 		btnPn.setLayout(new GridLayout(2,5)); 
 		

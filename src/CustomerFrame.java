@@ -31,23 +31,23 @@ public class CustomerFrame {
    public void init() {
       JFrame customFrame = new JFrame();
       customFrame.setVisible(true);
-      customFrame.setBounds(200, 200, 550, 550); // °¡·ÎÀ§Ä¡,¼¼·ÎÀ§Ä¡,°¡·Î±æÀÌ,¼¼·Î±æÀÌ
+      customFrame.setBounds(200, 200, 550, 550); // ê°€ë¡œìœ„ì¹˜,ì„¸ë¡œìœ„ì¹˜,ê°€ë¡œê¸¸ì´,ì„¸ë¡œê¸¸ì´
 
       JPanel northPn = new JPanel();
       JPanel listPn = new JPanel();
       JPanel southPn = new JPanel();
 
-      JButton accessibleListBtn = new JButton("´ë¿© °¡´É ¸®½ºÆ® º¸±â");
-      JTextField startDate = new JTextField("·»Æ® ½ÃÀÛ ÀÏ", 11);
-      JTextField rentPeriod = new JTextField("´ë¿© ±â°£", 6);
+      JButton accessibleListBtn = new JButton("ëŒ€ì—¬ ê°€ëŠ¥ ë¦¬ìŠ¤íŠ¸ ë³´ê¸°");
+      JTextField startDate = new JTextField("ë ŒíŠ¸ ì‹œì‘ ì¼", 11);
+      JTextField rentPeriod = new JTextField("ëŒ€ì—¬ ê¸°ê°„", 6);
       northPn.add(accessibleListBtn);
       northPn.add(startDate);
       northPn.add(rentPeriod);
 
-      JButton chooseCustomerBtn = new JButton("°í°´ ¼±ÅÃ");
-      JTextField customerName = new JTextField("°í°´ ÀÌ¸§", 7);
-      JTextField listNumber = new JTextField("¸®½ºÆ® ¹øÈ£", 7);
-      JButton rentBtn = new JButton("´ë¿© ½ÅÃ»");
+      JButton chooseCustomerBtn = new JButton("ê³ ê° ì„ íƒ");
+      JTextField customerName = new JTextField("ê³ ê° ì´ë¦„", 7);
+      JTextField listNumber = new JTextField("ë¦¬ìŠ¤íŠ¸ ë²ˆí˜¸", 7);
+      JButton rentBtn = new JButton("ëŒ€ì—¬ ì‹ ì²­");
       southPn.add(chooseCustomerBtn);
       southPn.add(customerName);
       southPn.add(listNumber);
@@ -73,7 +73,7 @@ public class CustomerFrame {
                }
 
             } catch (Exception e2) {
-               System.out.println("Äõ¸® ÀĞ±â ½ÇÆĞ :" + e2);
+               System.out.println("ì¿¼ë¦¬ ì½ê¸° ì‹¤íŒ¨ :" + e2);
             }
 
          }
@@ -87,12 +87,12 @@ public class CustomerFrame {
 
 class newWindow extends JFrame {
     newWindow() {
-        setTitle("»õ·Î ¶ç¿î Ã¢");
+        setTitle("ìƒˆë¡œ ë„ìš´ ì°½");
         
         JPanel NewWindowContainer = new JPanel();
         setContentPane(NewWindowContainer);
         
-        JLabel NewLabel = new JLabel("»õ Ã¢À» ¶ç¿ì±â");
+        JLabel NewLabel = new JLabel("ìƒˆ ì°½ì„ ë„ìš°ê¸°");
         
         NewWindowContainer.add(NewLabel);
         

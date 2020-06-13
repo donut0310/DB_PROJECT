@@ -7,31 +7,24 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Companies {
-	public Companies(JPanel listPn, JPanel btnPn) {
-		init(listPn, btnPn);
+	public Companies(JPanel btnPn) {
+		init(btnPn);
 	}
-	public void init(JPanel listPn, JPanel btnPn) {
+	public void init(JPanel btnPn) {
+		JButton submitBtn = new JButton("ì…ë ¥");
+		JButton updateBtn = new JButton("ë³€ê²½");
 		
-		JTextArea txtResult = new JTextArea(15,50);
-		txtResult.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(txtResult);
-	    
-		listPn.add("Center",scrollPane);
+		JTextField input1 = new JTextField("íšŒì‚¬ëª…");
+		JTextField input2 = new JTextField("ì£¼ì†Œ");
+		JTextField input3 = new JTextField("ì „í™”ë²ˆí˜¸");
+		JTextField input4 = new JTextField("ë‹´ë‹¹ì ì´ë¦„");
+		JTextField input5 = new JTextField("ë‹´ë‹¹ì ì´ë©”ì¼");
 		
-		JButton submitBtn = new JButton("ÀÔ·Â");
-		JButton updateBtn = new JButton("º¯°æ");
-		
-		JTextField input1 = new JTextField("È¸»ç¸í");
-		JTextField input2 = new JTextField("ÁÖ¼Ò");
-		JTextField input3 = new JTextField("ÀüÈ­¹øÈ£");
-		JTextField input4 = new JTextField("´ã´çÀÚ ÀÌ¸§");
-		JTextField input5 = new JTextField("´ã´çÀÚ ÀÌ¸ŞÀÏ");
-		
-		JTextField update1 = new JTextField("È¸»ç¸í");
-		JTextField update2 = new JTextField("ÁÖ¼Ò");
-		JTextField update3 = new JTextField("ÀüÈ­¹øÈ£");
-		JTextField update4 = new JTextField("´ã´çÀÚ ÀÌ¸§");
-		JTextField update5 = new JTextField("´ã´çÀÚ ÀÌ¸ŞÀÏ");
+		JTextField update1 = new JTextField("íšŒì‚¬ëª…");
+		JTextField update2 = new JTextField("ì£¼ì†Œ");
+		JTextField update3 = new JTextField("ì „í™”ë²ˆí˜¸");
+		JTextField update4 = new JTextField("ë‹´ë‹¹ì ì´ë¦„");
+		JTextField update5 = new JTextField("ë‹´ë‹¹ì ì´ë©”ì¼");
 		
 		btnPn.setLayout(new GridLayout(2,6)); 
 		
@@ -49,7 +42,6 @@ public class Companies {
 		btnPn.add(update4);
 		btnPn.add(update5);
 		
-		listPn.revalidate();
-		listPn.repaint();
+	
 	}
 }
