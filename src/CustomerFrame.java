@@ -31,6 +31,7 @@ public class CustomerFrame {
    static JTextField startDateTF;
    static JTextField startRentPeriodTF;
    JTextArea txtResult;
+   JTextArea txtCustomers;
    static JTextField customerLicense;
    static JTextField listNumber;
 
@@ -70,20 +71,25 @@ public class CustomerFrame {
    }
 
    public void init() {
-      JFrame customFrame = new JFrame();
+      JFrame customFrame = new JFrame("고객 접속");
       customFrame.setVisible(true);
       customFrame.setBounds(200, 200, 1200, 550); // 가로위치,세로위치,가로길이,세로길이
 
       JPanel northPn = new JPanel();
       JPanel listPn = new JPanel();
       JPanel southPn = new JPanel();
+      JPanel eastPn = new JPanel();
+      JPanel customersListPn = new JPanel();
 
       JButton accessibleListBtn = new JButton("대여 가능 리스트 보기");
       startDateTF = new JTextField("렌트 시작 일", 11);
       startRentPeriodTF = new JTextField("대여 기간", 6);
 
-      txtResult = new JTextArea(40, 60);
+      txtResult = new JTextArea(50, 60);
       txtResult.setEditable(false);
+
+      txtCustomers = new JTextArea(5, 40);
+      txtCustomers.setEditable(false);
 
       northPn.add(accessibleListBtn);
       northPn.add(startDateTF);
@@ -102,10 +108,41 @@ public class CustomerFrame {
       southPn.add(etcCostInfoTF);
       southPn.add(rentBtn);
 
+      txtCustomers.setText("운전면허증번호\t\t이름\n");
+      try {
+         conDB();
+         stmt = con.createStatement();
+         rs = stmt.executeQuery("select * from Customers;");
+         while (rs.next()) {
+            String str = rs.getString(1) + "\t" + rs.getString(2) + "\n";
+            txtCustomers.append(str);
+         }
+      } catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }finally {
+         try {
+            if (rs != null)
+               rs.close();
+            if (stmt != null)
+               stmt.close();
+            if (con != null)
+               con.close();
+         } catch (Exception e3) {
+            // TODO: handle exception
+         }
+      }
+
+      customersListPn.add(txtCustomers);
+      customersListPn.revalidate();
+      customersListPn.repaint();
+
       customFrame.add("North", northPn);
       customFrame.add("Center", listPn);
       customFrame.add("South", southPn);
-
+//      customFrame.add("East", eastPn);
+      customFrame.add("West", customersListPn);
+      
       accessibleListBtn.addActionListener(new ActionListener() {
 
          public void actionPerformed(ActionEvent e) {
@@ -236,7 +273,7 @@ public class CustomerFrame {
                System.out.println((rentQuery));
 
                stmt.executeUpdate(rentQuery);
-               
+
                accessibleListBtn.doClick();
 
             } catch (Exception e2) {

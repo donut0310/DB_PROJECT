@@ -128,13 +128,13 @@ public class AdminFrame extends JFrame implements ActionListener {
             	
 				new returnCar(btnPn);
 				
-            	txtResult.setText("");
+            	txtResult.setText("리스트번호\t캠핑카이름\t운전면허증번호\t대여회사\t대여 시작일\t대여 기간\t청구 요금\t납입 기한\t기타 청구내역\t기타 청구 요금 정보\n");
 				rs = stmt.executeQuery("select * from CarRentInfo where id not in (select rentInfoID from CarCheckList)");
 				while(rs.next()) {
-            	String str = rs.getInt(1) + " " + rs.getInt(2) + " " + rs.getString(3) +
-						" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + 
-						" " + rs.getString(7) + " " + rs.getString(8) + " " + rs.getString(9) + 
-						" " + rs.getString(10)+"\n";
+            	String str = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getString(3) +
+						"\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6) + 
+						"\t" + rs.getString(7) + "\t" + rs.getString(8) + "\t" + rs.getString(9) + 
+						"\t" + rs.getString(10)+"\n";
             		txtResult.append(str);
 				}
 				listPn.add(txtResult);
@@ -147,11 +147,11 @@ public class AdminFrame extends JFrame implements ActionListener {
             	
 				new Companies(btnPn);
 				
-            	txtResult.setText("");
+            	txtResult.setText("리스트번호\t회사명\t주소\t\t전화번호\t담당자 이름\t담당자 이메일\n");
             	rs = stmt.executeQuery(getCompanies);
 				while(rs.next()) {
-            		String str = rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) +
-            				" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + "\n";
+            		String str = rs.getInt(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) +
+            				"\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6) + "\n";
             		txtResult.append(str);
 				}
 				listPn.add(txtResult);
@@ -164,13 +164,13 @@ public class AdminFrame extends JFrame implements ActionListener {
 				
 				new CampingCars(btnPn);
 				
-				txtResult.setText("");
+				txtResult.setText("리스트번호\t캠핑카 이름\t차량번호\t승차 인원수\t제조회사\t제조 연도\t누적 주행 거리\t대여비용\t대여회사ID\t등록일자\n");
             	rs = stmt.executeQuery(getCapingCars);
 				while(rs.next()) {
-            		String str = rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) +
-							" " + rs.getInt(4) + " " + rs.getString(5) + " " + rs.getInt(6) + 
-							" " + rs.getInt(7) + " " + rs.getInt(8) + " " + rs.getInt(9) + 
-							" " + rs.getString(10) + "\n";
+            		String str = rs.getInt(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) +
+							"\t" + rs.getInt(4) + "\t" + rs.getString(5) + "\t" + rs.getInt(6) + 
+							"\t" + rs.getInt(7) + "\t" + rs.getInt(8) + "\t" + rs.getInt(9) + 
+							"\t" + rs.getString(10) + "\n";
             		txtResult.append(str);
 				}
 				listPn.add(txtResult);
@@ -182,11 +182,11 @@ public class AdminFrame extends JFrame implements ActionListener {
 	        	btnPn.removeAll();
 				
 				new Customers(btnPn);
-				txtResult.setText("");
+				txtResult.setText("운전면허증번호\t고객명\t고객주소\t\t고객 전화번호\t고객 이메일\n");
 	        	rs = stmt.executeQuery(getCustomers);
 				while(rs.next()) {
-	        		String str = rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) +
-	        				" " + rs.getString(4) + " " + rs.getString(5) + "\n";
+	        		String str = rs.getString(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) +
+	        				"\t" + rs.getString(4) + "\t" + rs.getString(5) + "\n";
 	        		txtResult.append(str);
 				}
 					listPn.add(txtResult);
@@ -198,11 +198,11 @@ public class AdminFrame extends JFrame implements ActionListener {
 	        	btnPn.removeAll();
 				
 				new ServiceCenters(btnPn);
-				txtResult.setText("");
+				txtResult.setText("리스트번호\t정비소명\t정비소 주소\t\t정비소 전화번호\t담당자 이름\t담당자 이메일\n");
 	        	rs = stmt.executeQuery(getServiceCenters);
 				while(rs.next()) {
-	        		String str = rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) +
-	        				" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + "\n";
+	        		String str = rs.getInt(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) +
+	        				"\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6) + "\n";
 	        		txtResult.append(str);
 				}
 				listPn.add(txtResult);

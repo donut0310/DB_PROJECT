@@ -2,6 +2,8 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 public class Start_main extends JFrame implements ActionListener {
 //	
-	JFrame customFrame,adminFrame;
 	JButton custom, admin;
 //	
 	//static Connection con;
@@ -28,10 +29,15 @@ public class Start_main extends JFrame implements ActionListener {
 		super("검성듀오");
 		//conDB();
 		layInit();
+		Dimension frameSize = getSize();
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    	setLocation((screenSize.width - frameSize.width) /2, (screenSize.height - frameSize.height) /2);
+		
+		setSize(200,200);
 		GridLayout grid = new GridLayout(1,2);
 		setLayout(grid);
 		setVisible(true);
-		setBounds(200, 200, 550, 550); // 가로위치,세로위치,가로길이,세로길이
+		// setBounds(750, 400, 200, 200); // 가로위치,세로위치,가로길이,세로길이
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -44,34 +50,6 @@ public class Start_main extends JFrame implements ActionListener {
 		add(custom);
 		add(admin);
 	}
-
-	
-
-	// string 정수 확인 함수
-	// public static boolean isNumeric(String string) {
-	// 	boolean isNumber = false;
-	// 	try {
-	// 		Integer.parseInt(string);
-	// 		isNumber = true;
-	// 	} catch (NumberFormatException e) {
-
-	// 	}
-	// 	return isNumber;
-	// }
-
-	// // string 올바른 날짜 확인 함수
-	// public static boolean isDate(String string) {
-	// 	String format = "yyyyMMdd";
-	// 	SimpleDateFormat dateFormatParser = new SimpleDateFormat(format, Locale.KOREA);
-	// 	dateFormatParser.setLenient(false);
-	// 	try {
-	// 		dateFormatParser.parse(string);
-	// 		return true;
-	// 	} catch (Exception Ex) {
-	// 		return false;
-	// 	}
-
-	// }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
