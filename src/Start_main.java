@@ -78,6 +78,7 @@ public class Start_main extends JFrame implements ActionListener {
 			if(e.getSource() == custom) {
 				new CustomerFrame();
 			} 
+			
 			else if(e.getSource() == admin){
 				new AdminFrame();
 			}

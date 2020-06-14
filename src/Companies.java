@@ -86,7 +86,12 @@ public class Companies {
 			try{
 				conDB();
 				stmt = con.createStatement();
-				String str = "insert into Companies (name,address,phone,keeperName,keeperEmail) VALUES (" +"'" + name + "','" + address +  "','" + phone + "','" + keeperName + "','" + keeperEmail + "')";
+				String str = "insert into Companies (name,address,phone,keeperName,keeperEmail) VALUES (" + "'" 
+				+ name + "','" 
+				+ address +  "','" 
+				+ phone + "','" 
+				+ keeperName + "','" 
+				+ keeperEmail + "')";
 				stmt.executeUpdate(str);
 			}catch (Exception e2) {
 				System.out.println();
