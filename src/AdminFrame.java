@@ -107,18 +107,9 @@ public class AdminFrame extends JFrame implements ActionListener {
 				stmt.executeUpdate(querySafeModeOff);
 				// 테이블 존재시 삭제
 				for(int i=0;i<7;i++){
-					if(createTableQuery.tableName[i]=="Companies" || 
-					createTableQuery.tableName[i]=="CarRentInfo" ||
-					createTableQuery.tableName[i]=="CarCheckList" ||
-					createTableQuery.tableName[i]=="CarCheckList"){
-						stmt.executeUpdate("SET foreign_key_checks = 0");
-						stmt.executeUpdate("drop table if exists " + createTableQuery.tableName[i]);
-						stmt.executeUpdate("SET foreign_key_checks = 1");
-					}
-					else{
-						resetTable = "drop table if exists " + createTableQuery.tableName[i];
-						stmt.executeUpdate(resetTable);
-					}
+					stmt.executeUpdate("SET foreign_key_checks = 0");
+					stmt.executeUpdate("drop table if exists " + createTableQuery.tableName[i]);
+					stmt.executeUpdate("SET foreign_key_checks = 1");
 				}
 				//테이블 생성
 				for(int i=0;i<4;i++){
