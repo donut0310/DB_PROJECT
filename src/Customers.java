@@ -1,7 +1,16 @@
 import java.awt.*;
-import javax.swing.*;
+import java.awt.event.*;
+import java.sql.*;import javax.swing.*;
 
 public class Customers {
+	Connection con;
+	Statement stmt= null;
+	ResultSet rs = null;
+	String Driver = "";
+	String url = "jdbc:mysql://localhost:3306/madang?&serverTimezone=Asia/Seoul&useSSL=false";
+	String userid = "madang";
+	String pwd = "madang";
+	
 	public Customers(JPanel btnPn) {
 		init(btnPn);
 	}
@@ -44,6 +53,8 @@ public class Customers {
 		btnPn.add(update4);
 		btnPn.add(update5);
 
+		update2.disable();
+		
 		btnPn.add(deleteBtn);
 		btnPn.add(delete1);
 		btnPn.add(delete2);
@@ -55,5 +66,118 @@ public class Customers {
 		delete3.disable();
 		delete4.disable();
 		delete5.disable();
+
+		submitBtn.addActionListener( new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			String licenseNum = (input1.getText());
+			String name = (input2.getText());
+			String address = (input3.getText());
+			String phone = (input4.getText());
+			String email = (input5.getText());
+			try{
+				conDB();
+				stmt = con.createStatement();
+				String str = "insert into Customers (licenseNum, name, address, phone, email)"
+				+ " VALUES (" +"'" + licenseNum + "','" + name +  "','" 
+				+ address + "','" + phone + "','" + email + "')";
+
+				stmt.executeUpdate(str);
+			}catch (Exception e2) {
+				System.out.println();
+				System.out.println("쿼리 읽기 실패 :" + e2);
+			} 
+			finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (stmt != null)
+						stmt.close();
+					if (con != null)
+						con.close();
+				} catch (Exception e3) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+	});
+	updateBtn.addActionListener( new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			String licenseNum = (update1.getText());
+			String name = (update2.getText());
+			String address = (update3.getText());
+			String phone = (update4.getText());
+			String email = (update5.getText());
+			try{
+				conDB();
+				stmt = con.createStatement();
+				String str = "update Customers set name = " + "'" + name + "'," 
+				+ "address = " + "'" + address + "'," 
+				+ "phone = " + "'" + phone + "'," 
+				+ "email = " + "'" + email 
+				+ "' where licenseNum = " + "'" + licenseNum + "'";
+				// System.out.println(str);
+				stmt.executeUpdate(str);
+
+			}catch (Exception e2) {
+				System.out.println();
+				System.out.println("쿼리 읽기 실패 :" + e2);
+			} 
+			finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (stmt != null)
+						stmt.close();
+					if (con != null)
+						con.close();
+				} catch (Exception e3) {
+					// TODO: handle exception
+				}
+			}
+		}
+	});
+	deleteBtn.addActionListener( new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			String licenseNum = (delete1.getText());
+			try{
+				conDB();
+				stmt = con.createStatement();
+				stmt.executeUpdate("delete from Customers where licenseNum = " + "'" 
+				+ licenseNum + "'");
+			}catch (Exception e2) {
+				System.out.println();
+				System.out.println("쿼리 읽기 실패 :" + e2);
+			} 
+			finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (stmt != null)
+						stmt.close();
+					if (con != null)
+						con.close();
+				} catch (Exception e3) {
+					// TODO: handle exception
+				}
+			}
+		}
+	});
+	}
+	public void conDB() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("드라이버 로드 성공");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		try { /* 데이터베이스를 연결하는 과정 */
+			System.out.println("데이터베이스 연결 준비...");
+			con = DriverManager.getConnection(url, userid, pwd);
+			System.out.println("데이터베이스 연결 성공");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

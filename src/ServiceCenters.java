@@ -116,8 +116,8 @@ public class ServiceCenters {
 				try{
 					conDB();
 					stmt = con.createStatement();
-					String str = "update ServiceCenters set name = " + "'" + name + "'," + "set address = " + "'" + address 
-					+ "'," + "set phone = " + "'" + phone + "'," +"set keeperName = " + "'" + keeperName + "'," + "set keeperEmail = " + "'" + keeperEmail + "' where id = "+id;
+					String str = "update ServiceCenters set name = " + "'" + name + "'," + "address = " + "'" + address 
+					+ "'," + "phone = " + "'" + phone + "'," +"keeperName = " + "'" + keeperName + "'," + "keeperEmail = " + "'" + keeperEmail + "' where id = "+id;
 					// System.out.println(str);
 					stmt.executeUpdate(str);
 					// UPDATE 테이블명 SET 필드명 = "바꿀 값" WHERE 필드명= "조건 값" 
