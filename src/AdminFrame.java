@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class AdminFrame extends JFrame implements ActionListener {
-	JFrame adminFrame;
 	JButton resetBtn, returnCarBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
 	JPanel searchBtnPn, listPn, btnPn;
 	GridLayout btns;

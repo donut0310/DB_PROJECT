@@ -82,7 +82,7 @@ public class CustomerFrame {
       startDateTF = new JTextField("렌트 시작 일", 11);
       startRentPeriodTF = new JTextField("대여 기간", 6);
 
-      txtResult = new JTextArea(15, 100);
+      txtResult = new JTextArea(40, 60);
       txtResult.setEditable(false);
 
       northPn.add(accessibleListBtn);
@@ -91,13 +91,11 @@ public class CustomerFrame {
 
       listPn.add(txtResult);
 
-      JButton chooseCustomerBtn = new JButton("고객 선택");
       customerLicense = new JTextField("운전면허번호", 7);
       listNumber = new JTextField("리스트 번호", 7);
       etcCostTF = new JTextField("기타 청구 내역", 10);
       etcCostInfoTF = new JTextField("기타 청구 요금 정보", 10);
       JButton rentBtn = new JButton("대여 신청");
-      southPn.add(chooseCustomerBtn);
       southPn.add(customerLicense);
       southPn.add(listNumber);
       southPn.add(etcCostTF);
@@ -152,26 +150,14 @@ public class CustomerFrame {
                      startDate = java.sql.Date.valueOf(startDateStr);
                      rentDate = java.sql.Date.valueOf(rentDateStr);
 
-                     if (((startDate.compareTo(rentDate) == -1 || startDate.compareTo(rentDate) == 0)
-                           && (rentDate.compareTo(
-                                 java.sql.Date.valueOf(addDate(startDate.toString(), 0, 0, period))) == -1
-                                 || rentDate.compareTo(java.sql.Date
-                                       .valueOf(addDate(startDate.toString(), 0, 0, period))) == 0))
-                           || ((startDate
-                                 .compareTo(java.sql.Date
-                                       .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5))) == -1
-                                 || startDate.compareTo(java.sql.Date
-                                       .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5))) == 0)
-                                 && ((java.sql.Date
-                                       .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5)))
-                                             .compareTo(java.sql.Date.valueOf(
-                                                   addDate(startDate.toString(), 0, 0, period))) == -1
-                                       || (java.sql.Date.valueOf(
-                                             addDate(rentDate.toString(), 0, 0, rentPeriod + 5)))
-                                                   .compareTo(java.sql.Date.valueOf(addDate(
-                                                         startDate.toString(), 0, 0, period))) == 0))
-
-                     ) {
+                     if ((startDate.compareTo(
+                           java.sql.Date.valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5))) == -1
+                           || startDate.compareTo(java.sql.Date
+                                 .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5))) == 0)
+                           && ((rentDate.compareTo(
+                                 java.sql.Date.valueOf(addDate(startDate.toString(), 0, 0, period))) == -1)
+                                 || (rentDate.compareTo(java.sql.Date
+                                       .valueOf(addDate(startDate.toString(), 0, 0, period))) == 0))) {
                         inAccessibleCarID.add(carIDList.get(i));
                      }
                   } catch (Exception e1) {
@@ -190,12 +176,12 @@ public class CustomerFrame {
                      accessibleCarID.remove(inAccessibleCarID.get(i));
                }
 
-               txtResult.setText("");
+               txtResult.setText("리스트번호\t캠핑카이름\t승차인원수\t제조회사\t대여비용\t누적주행거리\n");
                rs = stmt.executeQuery("select * from CampingCars;");
                while (rs.next()) {
                   int carID = rs.getInt(1);
-                  String str = carID + " " + rs.getString(2) + " " + rs.getInt(4) + " " + rs.getString(5) + " "
-                        + rs.getInt(7) + " " + rs.getInt(7) + "\n";
+                  String str = carID + "\t" + rs.getString(2) + "\t" + rs.getInt(4) + "\t" + rs.getString(5)
+                        + "\t" + rs.getInt(8) + "\t" + rs.getInt(7) + "\n";
 
                   if (accessibleCarID.contains(carID))
                      txtResult.append(str);
@@ -205,25 +191,6 @@ public class CustomerFrame {
                listPn.add(txtResult);
                listPn.revalidate();
                listPn.repaint();
-
-               System.out.println(txtResult.getText());
-
-            } catch (Exception e2) {
-               System.out.println("쿼리 읽기 실패 :" + e2);
-            }
-
-         }
-
-      });
-
-      chooseCustomerBtn.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent e) {
-            try {
-               conDB();
-               stmt = con.createStatement();
-
-               new newWindow();
 
             } catch (Exception e2) {
                System.out.println("쿼리 읽기 실패 :" + e2);
@@ -263,37 +230,19 @@ public class CustomerFrame {
                }
 
                String rentQuery = "insert into CarRentInfo (carID,licenseNum,cpID,rentDate,rentPeriod,cost,paymentDeadline,etcCost,etcCostInfo) values ("
-                     + carID + ",'" + licenseNum + "'," + cpID + ",'" + rentDate + "'," + rentPeriod + "," + cost
-                     + ",'" + paymentDeadline + "'," + etcCost + ",'" + etcCostInfo + "'" + ");";
+                     + carID + ",'" + licenseNum + "'," + cpID + ",'" + rentDate + "'," + rentPeriod + ","
+                     + cost * rentPeriod + ",'" + paymentDeadline + "'," + etcCost + ",'" + etcCostInfo + "'"
+                     + ");";
                System.out.println((rentQuery));
 
                stmt.executeUpdate(rentQuery);
+               
+               accessibleListBtn.doClick();
 
             } catch (Exception e2) {
                System.out.println("쿼리 읽기 실패 :" + e2);
             }
-
          }
-
       });
-
-   }
-
-}
-
-class newWindow extends JFrame {
-   newWindow() {
-      setTitle("새로 띄운 창");
-
-      JPanel NewWindowContainer = new JPanel();
-      setContentPane(NewWindowContainer);
-
-      JLabel NewLabel = new JLabel("새 창을 띄우기");
-
-      NewWindowContainer.add(NewLabel);
-
-      setSize(300, 100);
-      setResizable(false);
-      setVisible(true);
    }
 }
