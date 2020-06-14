@@ -53,7 +53,6 @@ public class returnCar {
 	    		try{
 	    			conDB();
 	    			stmt = con.createStatement();
-                    stmt.executeUpdate("delete from CarRentInfo where id = " + id);
                     
                     stmt.executeUpdate("insert into CarCheckList (carID,frontInfor,leftInfor,rightInfor,backInfor,repairRequired) VALUES ("
                     + carID + ",'" 
