@@ -81,6 +81,7 @@ public class createTableQuery {
 
         "CREATE TABLE IF NOT EXISTS `madang`.`CarCheckList` ("
         +"`id` INT NOT NULL AUTO_INCREMENT,"
+        +"`rentInfoID` INT NULL,"
         +"`carID` INT NULL,"
         +"`frontInfor` VARCHAR(45) NULL,"
         +"`leftInfor` VARCHAR(45) NULL,"
@@ -89,9 +90,15 @@ public class createTableQuery {
         +"`repairRequired` VARCHAR(45) NULL,"
         +"PRIMARY KEY (`id`),"
         +"INDEX `carID_idx` (`carID` ASC) VISIBLE,"
+        +"INDEX `rentInfoID_idx` (`rentInfoID` ASC) VISIBLE,"
         +"CONSTRAINT `carID_6`"
         +"  FOREIGN KEY (`carID`)"
         +"  REFERENCES `madang`.`CampingCars` (`id`)"
+        +"  ON DELETE NO ACTION"
+        +"  ON UPDATE NO ACTION,"
+        +"CONSTRAINT `rentInfoID_6`"
+        +"  FOREIGN KEY (`rentInfoID`)"
+        +"  REFERENCES `madang`.`CarRentInfo` (`id`)"
         +"  ON DELETE NO ACTION"
         +"  ON UPDATE NO ACTION)"
         +"ENGINE = InnoDB;",

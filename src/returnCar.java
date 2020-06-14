@@ -43,7 +43,7 @@ public class returnCar {
         
 	    deleteBtn.addActionListener( new ActionListener(){
 	    		public void actionPerformed(ActionEvent e) {
-                int id = Integer.parseInt(delete1.getText());
+                int rentInfoID = Integer.parseInt(delete1.getText());
                 int carID = Integer.parseInt(input1.getText());
                 String frontInfor= (input2.getText());
                 String leftInfor = (input3.getText());
@@ -54,7 +54,8 @@ public class returnCar {
 	    			conDB();
 	    			stmt = con.createStatement();
                     
-                    stmt.executeUpdate("insert into CarCheckList (carID,frontInfor,leftInfor,rightInfor,backInfor,repairRequired) VALUES ("
+                    stmt.executeUpdate("insert into CarCheckList (rentInfoID,carID,frontInfor,leftInfor,rightInfor,backInfor,repairRequired) VALUES ("
+                    + rentInfoID + "," 
                     + carID + ",'" 
 				    + frontInfor +  "','" 
 				    + leftInfor + "','" 

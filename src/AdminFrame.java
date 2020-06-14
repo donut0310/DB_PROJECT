@@ -129,16 +129,16 @@ public class AdminFrame extends JFrame implements ActionListener {
 				new returnCar(btnPn);
 				
             	txtResult.setText("");
-            	rs = stmt.executeQuery("select * from CarRentInfo");
+				rs = stmt.executeQuery("select * from CarRentInfo where id not in (select rentInfoID from CarCheckList)");
 				while(rs.next()) {
-            		String str = rs.getInt(1) + " " + rs.getInt(2) + " " + rs.getString(3) +
-							" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + 
-							" " + rs.getString(7) + " " + rs.getString(8) + " " + rs.getString(9) + 
-							" " + rs.getString(10)+"\n";
+            	String str = rs.getInt(1) + " " + rs.getInt(2) + " " + rs.getString(3) +
+						" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + 
+						" " + rs.getString(7) + " " + rs.getString(8) + " " + rs.getString(9) + 
+						" " + rs.getString(10)+"\n";
             		txtResult.append(str);
 				}
 				listPn.add(txtResult);
-            	listPn.revalidate();
+				listPn.revalidate();
         		listPn.repaint();
 			}
 			else if(e.getSource() == companyBtn) {
