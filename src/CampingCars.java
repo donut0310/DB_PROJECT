@@ -2,18 +2,13 @@ import java.awt.*;
 import javax.swing.*;
 
 public class CampingCars {
-	public CampingCars(JPanel listPn, JPanel btnPn) {
-		init(listPn, btnPn);
+	public CampingCars(JPanel btnPn) {
+		init( btnPn);
 	}
-	public void init(JPanel listPn, JPanel btnPn) {
-		JTextArea txtResult = new JTextArea(15,50);
-		txtResult.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(txtResult);
-	    
-		listPn.add("Center",scrollPane);
-		
+	public void init(JPanel btnPn) {
 		JButton submitBtn = new JButton("입력");
 		JButton updateBtn = new JButton("변경");
+		JButton deleteBtn = new JButton("삭제");
 		
 		JTextField input1 = new JTextField("캠핑카 이름");
 		JTextField input2 = new JTextField("캠핑카 차량번호");
@@ -34,8 +29,18 @@ public class CampingCars {
 		JTextField update7 = new JTextField("캠핑카 대여 비용");
 		JTextField update8 = new JTextField("캠핑카 대여 회사 ID");
 		JTextField update9 = new JTextField("캠핑카 등록 일자");
+
+		JTextField delete1 = new JTextField("번호");
+		JTextField delete2 = new JTextField("DISABLE");
+		JTextField delete3 = new JTextField("DISABLE");
+		JTextField delete4 = new JTextField("DISABLE");
+		JTextField delete5 = new JTextField("DISABLE");
+		JTextField delete6 = new JTextField("DISABLE");
+		JTextField delete7 = new JTextField("DISABLE");
+		JTextField delete8 = new JTextField("DISABLE");
+		JTextField delete9 = new JTextField("DISABLE");
 		
-		btnPn.setLayout(new GridLayout(2,10)); 
+		btnPn.setLayout(new GridLayout(3,10)); 
 		
 		btnPn.add(submitBtn);
 		btnPn.add(input1);
@@ -57,9 +62,26 @@ public class CampingCars {
 		btnPn.add(update6);
 		btnPn.add(update7);
 		btnPn.add(update8);
-		btnPn.add(update9);
+		btnPn.add(update9);	
 		
-		listPn.revalidate();
-		listPn.repaint();
+		btnPn.add(deleteBtn);
+		btnPn.add(delete1);
+		btnPn.add(delete2);
+		btnPn.add(delete3);
+		btnPn.add(delete4);
+		btnPn.add(delete5);
+		btnPn.add(delete6);
+		btnPn.add(delete7);
+		btnPn.add(delete8);
+		btnPn.add(delete9);	
+		
+		delete2.disable();
+		delete3.disable();
+		delete4.disable();
+		delete5.disable();
+		delete6.disable();
+		delete7.disable();
+		delete8.disable();
+		delete9.disable();
 	}
 }

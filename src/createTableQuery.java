@@ -32,6 +32,15 @@ public class createTableQuery {
         +"ON UPDATE NO ACTION)"
         +"ENGINE = InnoDB;",
 
+        "CREATE TABLE IF NOT EXISTS `madang`.`Customers` ("
+        +"`licenseNum` VARCHAR(45) NOT NULL,"
+        +"`name` VARCHAR(45) NULL,"
+        +"`address` VARCHAR(45) NULL,"
+        +"`phone` VARCHAR(45) NULL,"
+        +"`email` VARCHAR(45) NULL,"
+        +"PRIMARY KEY (`licenseNum`))"
+        +"ENGINE = InnoDB;",
+
         "CREATE TABLE IF NOT EXISTS `madang`.`ServiceCenters` ("
         +"`id` INT NOT NULL AUTO_INCREMENT,"
         +"`name` VARCHAR(45) NULL,"
@@ -40,15 +49,6 @@ public class createTableQuery {
         +"`keeperName` VARCHAR(45) NULL,"
         +"`keeperEmail` VARCHAR(45) NULL,"
         +"PRIMARY KEY (`id`))"
-        +"ENGINE = InnoDB;",
-
-        "CREATE TABLE IF NOT EXISTS `madang`.`Customers` ("
-        +"`licenseNum` VARCHAR(45) NOT NULL,"
-        +"`name` VARCHAR(45) NULL,"
-        +"`address` VARCHAR(45) NULL,"
-        +"`phone` VARCHAR(45) NULL,"
-        +"`email` VARCHAR(45) NULL,"
-        +"PRIMARY KEY (`licenseNum`))"
         +"ENGINE = InnoDB;"
     };
     

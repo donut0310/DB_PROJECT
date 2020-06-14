@@ -2,8 +2,6 @@ import java.awt.*;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Companies {
@@ -13,6 +11,7 @@ public class Companies {
 	public void init(JPanel btnPn) {
 		JButton submitBtn = new JButton("입력");
 		JButton updateBtn = new JButton("변경");
+		JButton deleteBtn = new JButton("삭제");
 		
 		JTextField input1 = new JTextField("회사명");
 		JTextField input2 = new JTextField("주소");
@@ -26,7 +25,13 @@ public class Companies {
 		JTextField update4 = new JTextField("담당자 이름");
 		JTextField update5 = new JTextField("담당자 이메일");
 		
-		btnPn.setLayout(new GridLayout(2,6)); 
+		JTextField delete1 = new JTextField("번호");
+		JTextField delete2 = new JTextField("DISABLE");
+		JTextField delete3 = new JTextField("DISABLE");
+		JTextField delete4 = new JTextField("DISABLE");
+		JTextField delete5 = new JTextField("DISABLE");
+		
+		btnPn.setLayout(new GridLayout(3,6)); 
 		
 		btnPn.add(submitBtn);
 		btnPn.add(input1);
@@ -41,7 +46,16 @@ public class Companies {
 		btnPn.add(update3);
 		btnPn.add(update4);
 		btnPn.add(update5);
-		
-	
+
+		btnPn.add(deleteBtn);
+		btnPn.add(delete1);
+		btnPn.add(delete2);
+		btnPn.add(delete3);
+		btnPn.add(delete4);
+		btnPn.add(delete5);
+		delete2.disable();
+		delete3.disable();
+		delete4.disable();
+		delete5.disable();
 	}
 }
