@@ -9,23 +9,30 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class AdminFrame implements ActionListener {
-	    JButton resetBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
+public class AdminFrame extends JFrame implements ActionListener {
+		JFrame adminFrame;
+		JButton resetBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
 	    JPanel searchBtnPn, listPn, btnPn;
 	    GridLayout btns;
 	    JTextArea txtResult;
 		 
+		Connection con;
+		Statement stmt= null;
+		ResultSet rs = null;
+		String Driver = "";
+		String url = "jdbc:mysql://localhost:3306/madang?&serverTimezone=Asia/Seoul&useSSL=false";
+		String userid = "madang";
+		String pwd = "madang";
+		
 	    public AdminFrame() {
+			super("관리자 접속");
+			setVisible(true);
+		    setBounds(200, 200, 1200, 550); // 가로위치,세로위치,가로길이,세로길이
+		    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		    init();
 	    }
 	    
 	    public void init() {
-		   JFrame adminFrame = new JFrame();
-		   adminFrame.setVisible(true);
-		   adminFrame.setBounds(200, 200, 1200, 550); // 가로위치,세로위치,가로길이,세로길이
-		   adminFrame.setTitle("관리자 접속");
-		   adminFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 		   searchBtnPn = new JPanel();
 		   listPn = new JPanel();
 		   btnPn = new JPanel();
@@ -64,16 +71,29 @@ public class AdminFrame implements ActionListener {
 		   searchBtnPn.add(s3);
 		   searchBtnPn.add(s4);
 		   
-		   adminFrame.add("North",searchBtnPn);
-		   adminFrame.add("Center",listPn);
-		   adminFrame.add("South", btnPn);
+		   add("North",searchBtnPn);
+		   add("Center",listPn);
+		   add("South", btnPn);
 	   }
-	   
+	 public void conDB() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("드라이버 로드 성공");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		try { /* 데이터베이스를 연결하는 과정 */
+			System.out.println("데이터베이스 연결 준비...");
+			con = DriverManager.getConnection(url, userid, pwd);
+			System.out.println("데이터베이스 연결 성공");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
 	   public void actionPerformed(ActionEvent e) {
-			Connection con = Start_main.con;
-			Statement stmt = Start_main.stmt;
-			ResultSet rs = Start_main.rs;
-			try {				
+			try {	
+				conDB();			
 				stmt = con.createStatement();
 				String resetTable;
 				String getCompanies = "SELECT * FROM Companies";
@@ -82,6 +102,11 @@ public class AdminFrame implements ActionListener {
 				// String getServiceCenters = "SELECT * FROM ServiceCenters";
 				
 				if(e.getSource() == resetBtn){
+					listPn.removeAll();
+					btnPn.removeAll();
+					listPn.revalidate();
+					listPn.repaint();
+					
 					String querySafeModeOff = "SET SQL_SAFE_UPDATES=0;";
 					stmt.executeUpdate(querySafeModeOff);
 					// 테이블 존재시 삭제
@@ -112,16 +137,17 @@ public class AdminFrame implements ActionListener {
 					listPn.removeAll();
 	            	btnPn.removeAll();
 	            	
-					Companies a = new Companies(btnPn);
+					new Companies(btnPn);
 					
 	            	txtResult.setText("");
-	            	txtResult.setText("test");
 	            	rs = stmt.executeQuery(getCompanies);
 					while(rs.next()) {
+						System.out.println("Fdsf");
 	            		String str = rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) +
 	            				" " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + "\n";
 	            		txtResult.append(str);
-	            	}
+					}
+					listPn.add(txtResult);
 	            	listPn.revalidate();
 	        		listPn.repaint();
 				} 
@@ -165,15 +191,12 @@ public class AdminFrame implements ActionListener {
 			 } 
 			finally {
 				try {
-					rs.close();
-					stmt.close();
-					con.close();
-					// if (rs != null)
-					// 	rs.close();
-					// if (stmt != null)
-					// 	stmt.close();
-					// if (con != null)
-					// 	con.close();
+					if (rs != null)
+						rs.close();
+					if (stmt != null)
+						stmt.close();
+					if (con != null)
+						con.close();
 				} catch (Exception e3) {
 					// TODO: handle exception
 				}
