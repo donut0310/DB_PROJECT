@@ -92,7 +92,7 @@ public class CustomerFrame {
       listPn.add(txtResult);
 
       JButton chooseCustomerBtn = new JButton("고객 선택");
-      customerLicense = new JTextField("고객 이름", 7);
+      customerLicense = new JTextField("운전면허번호", 7);
       listNumber = new JTextField("리스트 번호", 7);
       etcCostTF = new JTextField("기타 청구 내역", 10);
       etcCostInfoTF = new JTextField("기타 청구 요금 정보", 10);
@@ -152,15 +152,26 @@ public class CustomerFrame {
                      startDate = java.sql.Date.valueOf(startDateStr);
                      rentDate = java.sql.Date.valueOf(rentDateStr);
 
-                     if ((startDate.compareTo(rentDate) == -1 && rentDate.compareTo(
-                           java.sql.Date.valueOf(addDate(startDate.toString(), 0, 0, period))) == -1)
-                           || (startDate
+                     if (((startDate.compareTo(rentDate) == -1 || startDate.compareTo(rentDate) == 0)
+                           && (rentDate.compareTo(
+                                 java.sql.Date.valueOf(addDate(startDate.toString(), 0, 0, period))) == -1
+                                 || rentDate.compareTo(java.sql.Date
+                                       .valueOf(addDate(startDate.toString(), 0, 0, period))) == 0))
+                           || ((startDate
                                  .compareTo(java.sql.Date
                                        .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5))) == -1
-                                 && (java.sql.Date
+                                 || startDate.compareTo(java.sql.Date
+                                       .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5))) == 0)
+                                 && ((java.sql.Date
                                        .valueOf(addDate(rentDate.toString(), 0, 0, rentPeriod + 5)))
-                                             .compareTo(java.sql.Date.valueOf(addDate(
-                                                   startDate.toString(), 0, 0, period))) == -1)) {
+                                             .compareTo(java.sql.Date.valueOf(
+                                                   addDate(startDate.toString(), 0, 0, period))) == -1
+                                       || (java.sql.Date.valueOf(
+                                             addDate(rentDate.toString(), 0, 0, rentPeriod + 5)))
+                                                   .compareTo(java.sql.Date.valueOf(addDate(
+                                                         startDate.toString(), 0, 0, period))) == 0))
+
+                     ) {
                         inAccessibleCarID.add(carIDList.get(i));
                      }
                   } catch (Exception e1) {
@@ -244,25 +255,17 @@ public class CustomerFrame {
 
                int cpID = 0;
                int cost = 0;
-               
-               rs = stmt.executeQuery(
-                     "select * from CampingCars where id=" + listNumber.getText() + ";");
+
+               rs = stmt.executeQuery("select * from CampingCars where id=" + listNumber.getText() + ";");
                while (rs.next()) {
                   cpID = rs.getInt(9);
                   cost = rs.getInt(8);
                }
 
                String rentQuery = "insert into CarRentInfo (carID,licenseNum,cpID,rentDate,rentPeriod,cost,paymentDeadline,etcCost,etcCostInfo) values ("
-                     + carID + ",'" 
-                     + licenseNum + "'," 
-                     + cpID + ",'" 
-                     + rentDate + "'," 
-                     + rentPeriod + "," 
-                     + cost + ",'" 
-                     + paymentDeadline + "'," 
-                     + etcCost + ",'"  
-                     + etcCostInfo + "'" + ");";
-                  System.out.println((rentQuery));
+                     + carID + ",'" + licenseNum + "'," + cpID + ",'" + rentDate + "'," + rentPeriod + "," + cost
+                     + ",'" + paymentDeadline + "'," + etcCost + ",'" + etcCostInfo + "'" + ");";
+               System.out.println((rentQuery));
 
                stmt.executeUpdate(rentQuery);
 

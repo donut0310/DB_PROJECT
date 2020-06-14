@@ -45,31 +45,23 @@ public class returnCar {
 	    		public void actionPerformed(ActionEvent e) {
                 int id = Integer.parseInt(delete1.getText());
                 int carID = Integer.parseInt(input1.getText());
-                String front= (input2.getText());
-                String left = (input3.getText());
-                String right = (input4.getText());
-                String back = (input5.getText());
+                String frontInfor= (input2.getText());
+                String leftInfor = (input3.getText());
+                String rightInfor = (input4.getText());
+                String backInfor = (input5.getText());
                 String repairRequired = (input6.getText());
 	    		try{
 	    			conDB();
 	    			stmt = con.createStatement();
                     stmt.executeUpdate("delete from CarRentInfo where id = " + id);
-                    System.out.println("insert into CarCheckList (carID,front,left,right,back,repairRequired) values ("
-                    + carID + ",'" 
-				    + front +  "','" 
-				    + left + "','" 
-				    + right + "','" 
-                    + back + "','" 
-                    + repairRequired + "')");
-                    // stmt.executeUpdate("insert into CarCheckList (carID,front,left,right,back,repairRequired) values ("
-                    // + carID + ",'" 
-				    // + front +  "','" 
-				    // + left + "','" 
-				    // + right + "','" 
-                    // + back + "','" 
-                    // + repairRequired + "')");
-                    // stmt.executeUpdate("insert into CarCheckList (carID,front,left,right,back,repairRequired) values (1,'ㄹㄹ','ㄹㄹ',ㄹㄻ','ㄹㄹ','O')");
                     
+                    stmt.executeUpdate("insert into CarCheckList (carID,frontInfor,leftInfor,rightInfor,backInfor,repairRequired) VALUES ("
+                    + carID + ",'" 
+				    + frontInfor +  "','" 
+				    + leftInfor + "','" 
+				    + rightInfor + "','" 
+                    + backInfor + "','" 
+                    + repairRequired + "')");                    
 	    		}catch (Exception e2) {
 	    			System.out.println();
 	    			System.out.println("쿼리 읽기 실패 :" + e2);
