@@ -112,7 +112,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 					stmt.executeUpdate("SET foreign_key_checks = 1");
 				}
 				//테이블 생성
-				for(int i=0;i<4;i++){
+				for(int i=0;i<7;i++){
 					stmt.executeUpdate(createTableQuery.create[i]);
 				}
 				 //데이터 추가
