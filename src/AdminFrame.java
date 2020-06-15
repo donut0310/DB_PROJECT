@@ -3,13 +3,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class AdminFrame extends JFrame implements ActionListener {
-	JButton resetBtn, returnCarBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn;
+	JButton resetBtn, returnCarBtn, companyBtn, campingCarsBtn, customersBtn, serviceCentersBtn, requestBtn;
+	JButton s1,s2,s3,s4;
 	JPanel searchBtnPn, listPn, btnPn;
 	GridLayout btns;
 	JTextArea txtResult;
@@ -40,29 +43,34 @@ public class AdminFrame extends JFrame implements ActionListener {
 	   txtResult.setEditable(false);
 	
 	   resetBtn = new JButton("초기화");
-	   returnCarBtn = new JButton("반환 대기 목록");
 	   companyBtn = new JButton("대여 회사");
 	   campingCarsBtn = new JButton("캠핑 카");
 	   customersBtn = new JButton("고객");
 	   serviceCentersBtn = new JButton("정비소");
+	   requestBtn = new JButton("정비의뢰");
 	   
 	   resetBtn.addActionListener(this);
-	   returnCarBtn.addActionListener(this);
 	   companyBtn.addActionListener(this);
 	   campingCarsBtn.addActionListener(this);
 	   customersBtn.addActionListener(this);
 	   serviceCentersBtn.addActionListener(this);
-	   JButton s1 = new JButton("search 1");
-	   JButton s2 = new JButton("search 2");
-	   JButton s3 = new JButton("search 3");
-	   JButton s4 = new JButton("search 4");
+	   requestBtn.addActionListener(this);
+
+	   s1 = new JButton("반환 대기 목록");
+	   s2 = new JButton("우수회원");
+	   s3 = new JButton("블랙리스트");
+	   s4 = new JButton("폐차 예정");
+	   s1.addActionListener(this);
+	   s2.addActionListener(this);
+	   s3.addActionListener(this);
+	   s4.addActionListener(this);
 	   
 	   searchBtnPn.add(resetBtn);
-	   searchBtnPn.add(returnCarBtn);
 	   searchBtnPn.add(companyBtn);
 	   searchBtnPn.add(campingCarsBtn);
 	   searchBtnPn.add(customersBtn);
 	   searchBtnPn.add(serviceCentersBtn);
+	   searchBtnPn.add(requestBtn);
 	   searchBtnPn.add(s1);
 	   searchBtnPn.add(s2);
 	   searchBtnPn.add(s3);
@@ -121,25 +129,6 @@ public class AdminFrame extends JFrame implements ActionListener {
 				for(int i=0;i<4;i++){
 					stmt.executeUpdate(createTableQuery.insertSql[i]);
 				}
-			}
-			else if(e.getSource() == returnCarBtn) {
-				listPn.removeAll();
-            	btnPn.removeAll();
-            	
-				new returnCar(btnPn);
-				
-            	txtResult.setText("리스트번호\t캠핑카이름\t운전면허증번호\t대여회사\t대여 시작일\t대여 기간\t청구 요금\t납입 기한\t기타 청구내역\t기타 청구 요금 정보\n");
-				rs = stmt.executeQuery("select * from CarRentInfo where id not in (select rentInfoID from CarCheckList)");
-				while(rs.next()) {
-            	String str = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getString(3) +
-						"\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6) + 
-						"\t" + rs.getString(7) + "\t" + rs.getString(8) + "\t" + rs.getString(9) + 
-						"\t" + rs.getString(10)+"\n";
-            		txtResult.append(str);
-				}
-				listPn.add(txtResult);
-				listPn.revalidate();
-        		listPn.repaint();
 			}
 			else if(e.getSource() == companyBtn) {
 				listPn.removeAll();
@@ -208,19 +197,95 @@ public class AdminFrame extends JFrame implements ActionListener {
 				listPn.add(txtResult);
 	        	listPn.revalidate();
 	    		listPn.repaint();
+			 }
+			 else if(e.getSource() == requestBtn){
+				listPn.removeAll();
+	        	btnPn.removeAll();
+				
+				txtResult.setText("리스트번호\t고유 대여 번호\t캠핑카 등록 ID\t수리필요 여부\n");
+	        	rs = stmt.executeQuery("select * from CarCheckList where repairRequired = "+"'O'");
+				while(rs.next()) {
+						String str = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getInt(3) +
+								"\t" + rs.getString(8) + "\n";
+						txtResult.append(str);
+						System.out.println(str);
+					}
+				new RequestFix(btnPn);
+				listPn.add(txtResult);
+	        	listPn.revalidate();
+	    		listPn.repaint();
 		 	}
-//			else if(e.getSource() == s1){
+			 else if(e.getSource() == s1) {
+				listPn.removeAll();
+            	btnPn.removeAll();
+            	
+				new ReturnCar(btnPn);
+				
+            	txtResult.setText("리스트번호\t캠핑카이름\t운전면허증번호\t대여회사\t대여 시작일\t대여 기간\t청구 요금\t납입 기한\t기타 청구내역\t기타 청구 요금 정보\n");
+				rs = stmt.executeQuery("select * from CarRentInfo where id not in (select rentInfoID from CarCheckList)");
+				while(rs.next()) {
+            	String str = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getString(3) +
+						"\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6) + 
+						"\t" + rs.getString(7) + "\t" + rs.getString(8) + "\t" + rs.getString(9) + 
+						"\t" + rs.getString(10)+"\n";
+            		txtResult.append(str);
+				}
+				listPn.add(txtResult);
+				listPn.revalidate();
+        		listPn.repaint();
+			}
+//			우수회원
+//			else if(e.getSource() == s2){
 //				listPn.removeAll();
 //	           	btnPn.removeAll();
 //			}
-//			else if(e.getSource() == s){
-//				listPn.removeAll();
-//	           	btnPn.removeAll();
-//			}
-//			else if(e.getSource() == s3){
-//				listPn.removeAll();
-//	           	btnPn.removeAll();
-//			}
+//			블랙회원
+			else if(e.getSource() == s3){
+				listPn.removeAll();
+				btnPn.removeAll();
+				ArrayList<String> licenseNumInCustomers = new ArrayList<>();
+				ArrayList<String> licenseNumInRepairInfo = new ArrayList<>();
+				ArrayList<String> blackListCustomer = new ArrayList<>();
+				txtResult.setText("운전면허증번호\t고객명\t고객 주소\t\t고객 전화번호\t고객 이메일\n");
+				rs = stmt.executeQuery("select licenseNum from Customers");
+				while(rs.next()){
+					licenseNumInCustomers.add(rs.getString(1));
+				}
+				
+				rs = stmt.executeQuery("select licenseNum from RepairInfo");
+				while(rs.next()){
+					licenseNumInRepairInfo.add(rs.getString(1));
+				}
+				int cnt=0;
+				// System.out.println(licenseNumInCustomers.size() + " " + licenseNumInRepairInfo.size());
+				for(int i=0;i<licenseNumInRepairInfo.size();i++){
+					for(int j=0;j<licenseNumInCustomers.size();j++){
+						if((licenseNumInRepairInfo.get(i)).equals(licenseNumInCustomers.get(j))){
+							System.out.println(licenseNumInRepairInfo.get(i) + " " +licenseNumInCustomers.get(j));
+							cnt++;
+						}
+					}
+					if(cnt>=3){
+						blackListCustomer.add(licenseNumInRepairInfo.get(i));
+					}
+					cnt=0;
+				}
+				System.out.println(blackListCustomer.size());
+				for(int i=0;i<blackListCustomer.size();i++){
+					// rs = stmt.executeQuery("select * from Customers where licenseNum = "+blackListCustomer.get(i));
+					// while(rs.next()){
+					// 	String str = rs.getString(1) + "\t" + rs.getString(2) + "\t"
+					// 	+ rs.getString(3) + "\t" + rs.getString(4) + "\t"
+					// 	+ rs.getString(5) + "\n";
+					// 	txtResult.append(str);
+					// }
+				}
+				listPn.add(txtResult);
+	        	listPn.revalidate();
+	    		listPn.repaint();
+				// select count(*) from RepairInfo where licenseNum = "  서울시 마포구 망원동";
+			}
+//			폐차
 //			else if(e.getSource() == s4){
 //				listPn.removeAll();
 //	           	btnPn.removeAll();

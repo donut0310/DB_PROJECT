@@ -6,7 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class returnCar {
+public class ReturnCar {
     Connection con;
 	Statement stmt= null;
 	ResultSet rs = null;
@@ -15,7 +15,7 @@ public class returnCar {
 	String userid = "madang";
     String pwd = "madang";
     
-    public returnCar(JPanel btnPn){
+    public ReturnCar(JPanel btnPn){
         init(btnPn);
     }
     public void init(JPanel btnPn) {
@@ -61,7 +61,7 @@ public class returnCar {
 				    + leftInfor + "','" 
 				    + rightInfor + "','" 
                     + backInfor + "','" 
-                    + repairRequired + "')");                    
+					+ repairRequired + "')");                  
 	    		}catch (Exception e2) {
 	    			System.out.println();
 	    			System.out.println("쿼리 읽기 실패 :" + e2);

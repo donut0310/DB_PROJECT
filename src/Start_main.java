@@ -26,7 +26,7 @@ public class Start_main extends JFrame implements ActionListener {
 	String pwd = "madang";
 	
 	public Start_main() {
-		super("검성듀오");
+		super("캠핑카 대여 시스템");
 		//conDB();
 		layInit();
 		Dimension frameSize = getSize();
