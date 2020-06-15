@@ -212,6 +212,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 				listPn.add(txtResult);
 				listPn.revalidate();
 				listPn.repaint();
+				
 			} else if (e.getSource() == s1) {
 				listPn.removeAll();
 				btnPn.removeAll();
@@ -230,6 +231,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 				listPn.add(txtResult);
 				listPn.revalidate();
 				listPn.repaint();
+				
 			}
 //			우수회원 : 반환된 차량의 수리필요 여부에 따라 정비 정보 테이블로 데이터가 옮겨지는데, 캠핑카 대여정보 테이블의 
 // 			운전 면허증과 비교해 정비 정보테이블에 같은 면허증이 없다면 무사고로 인정해 우수회원으로 추가
@@ -238,7 +240,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 				btnPn.removeAll();
 				ArrayList<String> licenseNumInRentInfor = new ArrayList<>();
 				ArrayList<String> licenseNumInRepairInfo = new ArrayList<>();
-				ArrayList<String> pirmeCustomer = new ArrayList<>();
+				ArrayList<String> primeCustomer = new ArrayList<>();
 
 				txtResult.setText("운전면허증번호\t\t고객명\t고객 주소\t\t고객 전화번호\t고객 이메일\n");
 				rs = stmt.executeQuery("select licenseNum from CarRentInfo");
@@ -251,8 +253,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 				}
 
 				int cnt = 0;
-				System.out.println(licenseNumInRentInfor.size() + " " + licenseNumInRepairInfo.size());
-
+				int flag = 0;
 				for (int i = 0; i < licenseNumInRentInfor.size(); i++) {
 					for (int j = 0; j < licenseNumInRepairInfo.size(); j++) {
 						if ((licenseNumInRepairInfo.get(j)).equals(licenseNumInRentInfor.get(i))) {
@@ -260,17 +261,26 @@ public class AdminFrame extends JFrame implements ActionListener {
 						}
 					}
 					if (cnt == 0) {
-						pirmeCustomer.add(licenseNumInRentInfor.get(i));
+						for(int k=0;k<primeCustomer.size();k++){
+							if((licenseNumInRentInfor.get(i)).equals(primeCustomer.get(k))){
+								flag = 1;
+								break;
+							}
+						}
+						if(flag==0){
+							primeCustomer.add(licenseNumInRentInfor.get(i));
+						}else{
+							flag = 0;
+						}
 					}
 					cnt = 0;
 				}
-				for (int i = 0; i < pirmeCustomer.size(); i++) {
+				for (int i = 0; i < primeCustomer.size(); i++) {
 					rs = stmt.executeQuery(
-							"select * from Customers where licenseNum = " + "'" + pirmeCustomer.get(i) + "'");
+							"select * from Customers where licenseNum = " + "'" + primeCustomer.get(i) + "'");
 					while (rs.next()) {
 						String str = rs.getString(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) + "\t"
 								+ rs.getString(4) + "\t" + rs.getString(5) + "\n";
-						System.out.println(str);
 						txtResult.append(str);
 					}
 				}
@@ -298,18 +308,9 @@ public class AdminFrame extends JFrame implements ActionListener {
 					licenseNumInRepairInfo.add(rs.getString(1));
 				}
 				int cnt = 0;
-				System.out.println(licenseNumInCustomers.size() + " " + licenseNumInRepairInfo.size());
-				for (int i = 0; i < licenseNumInCustomers.size(); i++) {
-					System.out.println(licenseNumInCustomers.get(i));
-				}
-				System.out.println("---------------------------");
-				for (int i = 0; i < licenseNumInRepairInfo.size(); i++) {
-					System.out.println(licenseNumInRepairInfo.get(i));
-				}
 				for (int i = 0; i < licenseNumInCustomers.size(); i++) {
 					for (int j = 0; j < licenseNumInRepairInfo.size(); j++) {
 						if ((licenseNumInCustomers.get(i)).equals(licenseNumInRepairInfo.get(j))) {
-							System.out.println(licenseNumInCustomers.get(i) + " and " + licenseNumInRepairInfo.get(j));
 							cnt++;
 						}
 					}
@@ -324,7 +325,6 @@ public class AdminFrame extends JFrame implements ActionListener {
 					while (rs.next()) {
 						String str = rs.getString(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) + "\t"
 								+ rs.getString(4) + "\t" + rs.getString(5) + "\n";
-						System.out.println(str);
 						txtResult.append(str);
 					}
 				}
@@ -372,7 +372,6 @@ public class AdminFrame extends JFrame implements ActionListener {
 						}
 					}
 				}
-				System.out.println(txtResult);
 				listPn.add(txtResult);
 				listPn.revalidate();
 				listPn.repaint();

@@ -96,7 +96,6 @@ public class Companies {
 							+ name + "','" + address + "','" + phone + "','" + keeperName + "','" + keeperEmail + "')";
 					stmt.executeUpdate(str);
 				} catch (Exception e2) {
-					System.out.println();
 					System.out.println("쿼리 읽기 실패 :" + e2);
 				} finally {
 					try {

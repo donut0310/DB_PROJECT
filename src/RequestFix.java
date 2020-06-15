@@ -78,25 +78,16 @@ public class RequestFix {
 					rs = stmt.executeQuery("select * from CarRentInfo where id = " + id);
 					while (rs.next()) {
 						primaryID = rs.getInt(1);
-						System.out.println((primaryID));
 						carID = rs.getInt(2);
 						licenseNum = rs.getString(3);
 						cpID = rs.getInt(4);
 						repairDate = addDate(rs.getString(5), 0, 0, rs.getInt(6) + 5);
 						paymentDeadline = addDate(repairDate, 0, 0, 5);
-						System.out.println(carID + "," + licenseNum);
 						str = "insert into RepairInfo (carID,scID,cpID,licenseNum,repairDetail,repairDate,repairCost,paymentDeadline,etcRepairDetail) VALUES ("
 								+ +carID + "," + scID + "," + cpID + ",'" + licenseNum + "','" + repairDetail + "','"
 								+ repairDate + "'," + repairCost + ",'" + paymentDeadline + "','" + etcRepairDetail
 								+ "')";
-						// System.out.println(str);
-
-						// String str2 = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getString(3) +
-						// "\t"
-						// + rs.getInt(4) + "\t" + rs.getString(5) + "\t" + rs.getInt(6)
-						// + "\t" + rs.getInt(7) + "\t" + rs.getString(8) + "\t" + rs.getInt(9) +"\t" +
-						// rs.getString(10) +"\n";
-						// System.out.println(str2 + "\n");
+						
 					}
 				} catch (Exception e2) {
 					System.out.println("쿼리 읽기 실패 :" + e2);

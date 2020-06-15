@@ -27,7 +27,7 @@ public class ReturnCar {
 	public void init(JPanel btnPn) {
 		JButton deleteBtn = new JButton("반환");
 
-		JTextField delete1 = new JTextField("번호");
+		JTextField delete1 = new JTextField("리스트 번호");
 
 		JTextField input1 = new JTextField("캠핑카 등록 ID");
 		JTextField input2 = new JTextField("앞부분 설명");

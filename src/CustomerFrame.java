@@ -113,7 +113,7 @@ public class CustomerFrame {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery("select * from Customers;");
 			while (rs.next()) {
-				String str = rs.getString(1) + "\t" + rs.getString(2) + "\n";
+				String str = rs.getString(1) + "\t\t" + rs.getString(2) + "\n";
 				txtCustomers.append(str);
 			}
 		} catch (SQLException e) {
