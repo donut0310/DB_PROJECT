@@ -1,11 +1,19 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class CampingCars {
 	Connection con;
-	Statement stmt= null;
+	Statement stmt = null;
 	ResultSet rs = null;
 	String Driver = "";
 	String url = "jdbc:mysql://localhost:3306/madang?&serverTimezone=Asia/Seoul&useSSL=false";
@@ -13,13 +21,14 @@ public class CampingCars {
 	String pwd = "madang";
 
 	public CampingCars(JPanel btnPn) {
-		init( btnPn);
+		init(btnPn);
 	}
+
 	public void init(JPanel btnPn) {
 		JButton submitBtn = new JButton("입력");
 		JButton updateBtn = new JButton("변경");
 		JButton deleteBtn = new JButton("삭제");
-		
+
 		JTextField input1 = new JTextField("번호");
 		JTextField input2 = new JTextField("캠핑카 이름");
 		JTextField input3 = new JTextField("캠핑카 차량번호");
@@ -30,7 +39,7 @@ public class CampingCars {
 		JTextField input8 = new JTextField("캠핑카 대여 비용");
 		JTextField input9 = new JTextField("캠핑카 대여 회사 ID");
 		JTextField input10 = new JTextField("캠핑카 등록 일자");
-		
+
 		JTextField update1 = new JTextField("번호");
 		JTextField update2 = new JTextField("캠핑카 이름");
 		JTextField update3 = new JTextField("캠핑카 차량번호");
@@ -52,9 +61,9 @@ public class CampingCars {
 		JTextField delete8 = new JTextField("DISABLE");
 		JTextField delete9 = new JTextField("DISABLE");
 		JTextField delete10 = new JTextField("DISABLE");
-		
-		btnPn.setLayout(new GridLayout(3,11)); 
-		
+
+		btnPn.setLayout(new GridLayout(3, 11));
+
 		btnPn.add(submitBtn);
 		btnPn.add(input1);
 		btnPn.add(input2);
@@ -67,7 +76,7 @@ public class CampingCars {
 		btnPn.add(input9);
 		btnPn.add(input10);
 		input1.disable();
-		
+
 		btnPn.add(updateBtn);
 		btnPn.add(update1);
 		btnPn.add(update2);
@@ -77,9 +86,9 @@ public class CampingCars {
 		btnPn.add(update6);
 		btnPn.add(update7);
 		btnPn.add(update8);
-		btnPn.add(update9);	
-		btnPn.add(update10);	
-		
+		btnPn.add(update9);
+		btnPn.add(update10);
+
 		btnPn.add(deleteBtn);
 		btnPn.add(delete1);
 		btnPn.add(delete2);
@@ -89,9 +98,9 @@ public class CampingCars {
 		btnPn.add(delete6);
 		btnPn.add(delete7);
 		btnPn.add(delete8);
-		btnPn.add(delete9);	
-		btnPn.add(delete10);	
-		
+		btnPn.add(delete9);
+		btnPn.add(delete10);
+
 		delete2.disable();
 		delete3.disable();
 		delete4.disable();
@@ -102,47 +111,44 @@ public class CampingCars {
 		delete9.disable();
 		delete10.disable();
 
-		submitBtn.addActionListener( new ActionListener(){
+		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			String name = (input2.getText());
-			String carNumber = (input3.getText());
-			int passengers = Integer.parseInt(input4.getText());
-			String madeCp = (input5.getText());
-			int madeYear = Integer.parseInt(input6.getText());
-			int totalMileage = Integer.parseInt(input7.getText());
-			int rentCost = Integer.parseInt(input8.getText());
-			int rentCpID = Integer.parseInt(input9.getText());
-			String carRegisterDate = (input10.getText());
-			try{
-				conDB();
-				stmt = con.createStatement();
-				String str = "insert into CampingCars"
-				+"(name,carNumber,passengers,madeCp,madeYear,"
-				+"totalMileage,rentCost,rentCpID,carRegisterDate) VALUES (" 
-				+"'" + name + "','" + carNumber +  "','" + passengers + "','" 
-				+ madeCp + "','" + madeYear + "','" + totalMileage + "','" 
-				+ rentCost + "','" + rentCpID +"','" + carRegisterDate +"')";
-				stmt.executeUpdate(str);
-			}catch (Exception e2) {
-				System.out.println();
-				System.out.println("쿼리 읽기 실패 :" + e2);
-			} 
-			finally {
+				String name = (input2.getText());
+				String carNumber = (input3.getText());
+				int passengers = Integer.parseInt(input4.getText());
+				String madeCp = (input5.getText());
+				int madeYear = Integer.parseInt(input6.getText());
+				int totalMileage = Integer.parseInt(input7.getText());
+				int rentCost = Integer.parseInt(input8.getText());
+				int rentCpID = Integer.parseInt(input9.getText());
+				String carRegisterDate = (input10.getText());
 				try {
-					if (rs != null)
-						rs.close();
-					if (stmt != null)
-						stmt.close();
-					if (con != null)
-						con.close();
-				} catch (Exception e3) {
-					// TODO: handle exception
+					conDB();
+					stmt = con.createStatement();
+					String str = "insert into CampingCars" + "(name,carNumber,passengers,madeCp,madeYear,"
+							+ "totalMileage,rentCost,rentCpID,carRegisterDate) VALUES (" + "'" + name + "','"
+							+ carNumber + "','" + passengers + "','" + madeCp + "','" + madeYear + "','" + totalMileage
+							+ "','" + rentCost + "','" + rentCpID + "','" + carRegisterDate + "')";
+					stmt.executeUpdate(str);
+				} catch (Exception e2) {
+					System.out.println();
+					System.out.println("쿼리 읽기 실패 :" + e2);
+				} finally {
+					try {
+						if (rs != null)
+							rs.close();
+						if (stmt != null)
+							stmt.close();
+						if (con != null)
+							con.close();
+					} catch (Exception e3) {
+						// TODO: handle exception
+					}
 				}
 			}
-		}
-		
-	});
-	updateBtn.addActionListener( new ActionListener(){
+
+		});
+		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(update1.getText());
 				String name = (update2.getText());
@@ -154,67 +160,61 @@ public class CampingCars {
 				int rentCost = Integer.parseInt(update8.getText());
 				int rentCpID = Integer.parseInt(update9.getText());
 				String carRegisterDate = (update10.getText());
-			try{
-				conDB();
-				stmt = con.createStatement();
-				String str = "update CampingCars set "
-				+ "name = " + "'" + name + "'," 
-				+ "carNumber = " + "'" + carNumber + "'," 
-				+ "passengers = " + "'" + passengers + "'," 
-				+ "madeCp = " + "'" + madeCp + "'," 
-				+ "madeYear = " + "'" + madeYear + "'," 
-				+ "totalMileage = " + "'" + totalMileage+ "'," 
-				+ "rentCost = " + "'" + rentCost + "'," 
-				+ "rentCpID = " + "'" + rentCpID + "'," 
-				+ "carRegisterDate = " + "'" + carRegisterDate + "' where id = "+id;
-				// System.out.println(str);
-				stmt.executeUpdate(str);
-				// UPDATE 테이블명 SET 필드명 = "바꿀 값" WHERE 필드명= "조건 값" 
+				try {
+					conDB();
+					stmt = con.createStatement();
+					String str = "update CampingCars set " + "name = " + "'" + name + "'," + "carNumber = " + "'"
+							+ carNumber + "'," + "passengers = " + "'" + passengers + "'," + "madeCp = " + "'" + madeCp
+							+ "'," + "madeYear = " + "'" + madeYear + "'," + "totalMileage = " + "'" + totalMileage
+							+ "'," + "rentCost = " + "'" + rentCost + "'," + "rentCpID = " + "'" + rentCpID + "',"
+							+ "carRegisterDate = " + "'" + carRegisterDate + "' where id = " + id;
+					// System.out.println(str);
+					stmt.executeUpdate(str);
+					// UPDATE 테이블명 SET 필드명 = "바꿀 값" WHERE 필드명= "조건 값"
 
-			}catch (Exception e2) {
-				System.out.println();
-				System.out.println("쿼리 읽기 실패 :" + e2);
-			} 
-			finally {
-				try {
-					if (rs != null)
-						rs.close();
-					if (stmt != null)
-						stmt.close();
-					if (con != null)
-						con.close();
-				} catch (Exception e3) {
-					// TODO: handle exception
+				} catch (Exception e2) {
+					System.out.println();
+					System.out.println("쿼리 읽기 실패 :" + e2);
+				} finally {
+					try {
+						if (rs != null)
+							rs.close();
+						if (stmt != null)
+							stmt.close();
+						if (con != null)
+							con.close();
+					} catch (Exception e3) {
+						// TODO: handle exception
+					}
 				}
 			}
-		}
-	});
-	deleteBtn.addActionListener( new ActionListener(){
+		});
+		deleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			int id = Integer.parseInt(delete1.getText());
-			try{
-				conDB();
-				stmt = con.createStatement();
-				stmt.executeUpdate("delete from CampingCars where id = " + id);
-			}catch (Exception e2) {
-				System.out.println();
-				System.out.println("쿼리 읽기 실패 :" + e2);
-			} 
-			finally {
+				int id = Integer.parseInt(delete1.getText());
 				try {
-					if (rs != null)
-						rs.close();
-					if (stmt != null)
-						stmt.close();
-					if (con != null)
-						con.close();
-				} catch (Exception e3) {
-					// TODO: handle exception
+					conDB();
+					stmt = con.createStatement();
+					stmt.executeUpdate("delete from CampingCars where id = " + id);
+				} catch (Exception e2) {
+					System.out.println();
+					System.out.println("쿼리 읽기 실패 :" + e2);
+				} finally {
+					try {
+						if (rs != null)
+							rs.close();
+						if (stmt != null)
+							stmt.close();
+						if (con != null)
+							con.close();
+					} catch (Exception e3) {
+						// TODO: handle exception
+					}
 				}
 			}
-		}
-	});
+		});
 	}
+
 	public void conDB() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -231,5 +231,5 @@ public class CampingCars {
 			e1.printStackTrace();
 		}
 	}
-	
+
 }
