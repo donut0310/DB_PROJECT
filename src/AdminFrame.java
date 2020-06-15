@@ -256,34 +256,33 @@ public class AdminFrame extends JFrame implements ActionListener {
 				while(rs.next()){
 					licenseNumInRepairInfo.add(rs.getString(1));
 				}
-				int cnt=0;
-				// System.out.println(licenseNumInCustomers.size() + " " + licenseNumInRepairInfo.size());
-				for(int i=0;i<licenseNumInRepairInfo.size();i++){
-					for(int j=0;j<licenseNumInCustomers.size();j++){
-						if((licenseNumInRepairInfo.get(i)).equals(licenseNumInCustomers.get(j))){
-							System.out.println(licenseNumInRepairInfo.get(i) + " " +licenseNumInCustomers.get(j));
+				int cnt = 0;
+				System.out.println(licenseNumInRepairInfo.size() + " " + licenseNumInCustomers.size());
+				
+				for(int i=0;i<licenseNumInCustomers.size();i++){
+					for(int j=0;j<licenseNumInRepairInfo.size();j++){
+						if((licenseNumInRepairInfo.get(j)).equals(licenseNumInCustomers.get(i))){
 							cnt++;
 						}
 					}
 					if(cnt>=3){
-						blackListCustomer.add(licenseNumInRepairInfo.get(i));
+						blackListCustomer.add(licenseNumInCustomers.get(i));
 					}
 					cnt=0;
 				}
-				System.out.println(blackListCustomer.size());
 				for(int i=0;i<blackListCustomer.size();i++){
-					// rs = stmt.executeQuery("select * from Customers where licenseNum = "+blackListCustomer.get(i));
-					// while(rs.next()){
-					// 	String str = rs.getString(1) + "\t" + rs.getString(2) + "\t"
-					// 	+ rs.getString(3) + "\t" + rs.getString(4) + "\t"
-					// 	+ rs.getString(5) + "\n";
-					// 	txtResult.append(str);
-					// }
+					rs = stmt.executeQuery("select * from Customers where licenseNum = " + "'" +blackListCustomer.get(i)+"'");
+					while(rs.next()){
+						String str = rs.getString(1) + "\t" + rs.getString(2) + "\t"
+						+ rs.getString(3) + "\t" + rs.getString(4) + "\t"
+						+ rs.getString(5) + "\n";
+						System.out.println(str);
+						txtResult.append(str);
+					}
 				}
 				listPn.add(txtResult);
 	        	listPn.revalidate();
 	    		listPn.repaint();
-				// select count(*) from RepairInfo where licenseNum = "  서울시 마포구 망원동";
 			}
 //			폐차
 //			else if(e.getSource() == s4){
