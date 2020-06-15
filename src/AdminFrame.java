@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -339,43 +339,47 @@ public class AdminFrame extends JFrame implements ActionListener {
 			else if (e.getSource() == s4) {
 				listPn.removeAll();
 				btnPn.removeAll();
-
-				ArrayList<Integer> carIDList = new ArrayList<Integer>();
-				ArrayList<Integer> rentCountList = new ArrayList<Integer>();
-				ArrayList<Integer> repairCountList = new ArrayList<Integer>();
-
+			
+				ArrayList<Integer> keysRent = new ArrayList<Integer>();
+				ArrayList<Integer> keysRepair = new ArrayList<Integer>();
+				ArrayList<Integer> keys = new ArrayList<Integer>();
+				HashMap<Integer, Integer> rentCountList = new HashMap<Integer, Integer>();
+				HashMap<Integer, Integer> repairCountList = new HashMap<Integer, Integer>();
+			
 				txtResult.setText("폐차예정차량\t차량번호\t제조연도\t대여회수\t수리회수\n");
-
-				rs = stmt.executeQuery("select id from campingcars;");
-				while (rs.next()) {
-					carIDList.add(rs.getInt(1));
-				}
-
+			
 				rs = stmt.executeQuery("select carID from carRentInfo;");
 				while (rs.next()) {
-					rentCountList.add(rs.getInt(1));
+				   keysRent.add(rs.getInt(1));
+				   if (rentCountList.containsKey(rs.getInt(1)))
+					  rentCountList.put(rs.getInt(1), rentCountList.get(rs.getInt(1)) + 1);
+				   else
+					  rentCountList.put(rs.getInt(1), 1);
 				}
-
+			
 				rs = stmt.executeQuery("select carID from RepairInfo;");
 				while (rs.next()) {
-					repairCountList.add(rs.getInt(1));
+				   keysRepair.add(rs.getInt(1));
+				   if (repairCountList.containsKey(rs.getInt(1)))
+					  repairCountList.put(rs.getInt(1), repairCountList.get(rs.getInt(1)) + 1);
+				   else
+					  repairCountList.put(rs.getInt(1), 1);
 				}
-
-				for (int i = 0; i < carIDList.size(); ++i) {
-//               if(rentCountList.get(i) >= 5 && repairCountList.get(i) >= 3 ) {
-					if (rentCountList.get(i) >= 1 && repairCountList.get(i) >= 1) {
-						rs = stmt.executeQuery("select * from campingcars where id = " + carIDList.get(i) + ";");
-						while (rs.next()) {
-							String str = "" + rs.getString(2) + "\t" + rs.getString(3) + "\t" + rs.getInt(6) + "\t"
-									+ rentCountList.get(i) + "\t" + repairCountList.get(i);
-							txtResult.append(str);
-						}
-					}
+			
+				for (int i = 0; i < keysRent.size(); ++i) {
+				   if (rentCountList.get(keysRent.get(i)) >= 5 && repairCountList.get(keysRent.get(i)) >= 3) {
+					  rs = stmt.executeQuery("select * from campingcars where id = " + keysRent.get(i) + ";");
+					  while (rs.next()) {
+						 String str = "" + rs.getString(2) + "\t" + rs.getString(3) + "\t" + rs.getInt(6) + "\t"
+							   + rentCountList.get(keysRent.get(i)) + "\t" + repairCountList.get(keysRent.get(i));
+						 txtResult.append(str);
+					  }
+				   }
 				}
 				listPn.add(txtResult);
 				listPn.revalidate();
 				listPn.repaint();
-			}
+			 }
 		} catch (Exception e2) {
 			System.out.println();
 			System.out.println("쿼리 읽기 실패 :" + e2);
