@@ -126,7 +126,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 					stmt.executeUpdate(createTableQuery.create[i]);
 				}
 				 //데이터 추가
-				for(int i=0;i<4;i++){
+				for(int i=0;i<6;i++){
 					stmt.executeUpdate(createTableQuery.insertSql[i]);
 				}
 			}
@@ -202,13 +202,13 @@ public class AdminFrame extends JFrame implements ActionListener {
 				listPn.removeAll();
 	        	btnPn.removeAll();
 				
-				txtResult.setText("리스트번호\t고유 대여 번호\t캠핑카 등록 ID\t수리필요 여부\n");
+				txtResult.setText("리스트번호\t고유 대여 번호\t캠핑카 등록 ID\t앞부분 설명\t\t왼쪽설명\t\t오른쪽설명\t\t뒤쪽설명\t\t수리필요 여부\n");
 	        	rs = stmt.executeQuery("select * from CarCheckList where repairRequired = "+"'O'");
 				while(rs.next()) {
 						String str = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getInt(3) +
-								"\t" + rs.getString(8) + "\n";
+								"\t" + rs.getString(4)+"\t\t" + rs.getString(5)+"\t\t" + rs.getString(6)+ 
+								"\t\t" + rs.getString(7)+"\t\t" + rs.getString(8) + "\n";
 						txtResult.append(str);
-						System.out.println(str);
 					}
 				new RequestFix(btnPn);
 				listPn.add(txtResult);
@@ -234,12 +234,56 @@ public class AdminFrame extends JFrame implements ActionListener {
 				listPn.revalidate();
         		listPn.repaint();
 			}
-//			우수회원
-//			else if(e.getSource() == s2){
-//				listPn.removeAll();
-//	           	btnPn.removeAll();
-//			}
-//			블랙회원
+//			우수회원 : 반환된 차량의 수리필요 여부에 따라 정비 정보 테이블로 데이터가 옮겨지는데, 캠핑카 대여정보 테이블의 
+// 			운전 면허증과 비교해 정비 정보테이블에 같은 면허증이 없다면 무사고로 인정해 우수회원으로 추가
+			else if(e.getSource() == s2){
+					listPn.removeAll();
+				    btnPn.removeAll();
+				    ArrayList<String> licenseNumInRentInfor = new ArrayList<>();
+				 	ArrayList<String> licenseNumInRepairInfo = new ArrayList<>();
+					ArrayList<String> pirmeCustomer = new ArrayList<>();
+
+					txtResult.setText("운전면허증번호\t고객명\t고객 주소\t\t고객 전화번호\t고객 이메일\n");
+					rs = stmt.executeQuery("select licenseNum from CarRentInfo");
+					while(rs.next()){
+						licenseNumInRentInfor.add(rs.getString(1));
+					}
+					rs = stmt.executeQuery("select licenseNum from RepairInfo");
+					while(rs.next()){
+						licenseNumInRepairInfo.add(rs.getString(1));
+					}
+
+					int cnt = 0;
+					System.out.println(licenseNumInRentInfor.size() + " " + licenseNumInRepairInfo.size());
+				
+					for(int i=0;i<licenseNumInRentInfor.size();i++){
+						for(int j=0;j<licenseNumInRepairInfo.size();j++){
+							if((licenseNumInRepairInfo.get(j)).equals(licenseNumInRentInfor.get(i))){
+								cnt++;
+							}
+						}
+						if(cnt==0){
+							pirmeCustomer.add(licenseNumInRentInfor.get(i));
+						}
+						cnt=0;
+					}
+					for(int i=0;i<pirmeCustomer.size();i++){
+						rs = stmt.executeQuery("select * from Customers where licenseNum = " + "'" +pirmeCustomer.get(i)+"'");
+						while(rs.next()){
+							String str = rs.getString(1) + "\t" + rs.getString(2) + "\t"
+							+ rs.getString(3) + "\t" + rs.getString(4) + "\t"
+							+ rs.getString(5) + "\n";
+							System.out.println(str);
+							txtResult.append(str);
+						}
+					}
+					listPn.add(txtResult);
+	        		listPn.revalidate();
+	    			listPn.repaint();
+			}
+//			블랙회원 : 반환된 차량의 수리필요 여부에 따라 정비 정보 테이블로 데이터가 옮겨진다
+// 			정비 정보 테이블 내에 운전면허증을 기준으로 고객 테이블의 운전면허증과 비교해 3번이상 같은 면허증이 발견되면
+// 			블랙회원으로 추가
 			else if(e.getSource() == s3){
 				listPn.removeAll();
 				btnPn.removeAll();
@@ -257,11 +301,17 @@ public class AdminFrame extends JFrame implements ActionListener {
 					licenseNumInRepairInfo.add(rs.getString(1));
 				}
 				int cnt = 0;
-				System.out.println(licenseNumInRepairInfo.size() + " " + licenseNumInCustomers.size());
-				
+				System.out.println(licenseNumInCustomers.size() + " " +licenseNumInRepairInfo.size() );
+				for(int i=0;i<licenseNumInCustomers.size();i++){
+					System.out.println(licenseNumInCustomers.get(i));
+				}System.out.println("---------------------------");
+				for(int i=0;i<licenseNumInRepairInfo.size();i++){
+					System.out.println(licenseNumInRepairInfo.get(i));
+				}
 				for(int i=0;i<licenseNumInCustomers.size();i++){
 					for(int j=0;j<licenseNumInRepairInfo.size();j++){
-						if((licenseNumInRepairInfo.get(j)).equals(licenseNumInCustomers.get(i))){
+						if((licenseNumInCustomers.get(i)).equals(licenseNumInRepairInfo.get(j))){
+							System.out.println(licenseNumInCustomers.get(i)+ " and " + licenseNumInRepairInfo.get(j));
 							cnt++;
 						}
 					}
@@ -284,11 +334,51 @@ public class AdminFrame extends JFrame implements ActionListener {
 	        	listPn.revalidate();
 	    		listPn.repaint();
 			}
-//			폐차
-//			else if(e.getSource() == s4){
-//				listPn.removeAll();
-//	           	btnPn.removeAll();
-//			}
+//         폐차
+//         사용 회수가 5회 이상이고 수리를 3회 이상 받아 더 이상 캠핑카로써의 메리트가 없어 폐차 예정인 목록 출력하는 버튼
+//         사용 회수가 5회 이상인지 확인 -> CarRentInfo 테이블 검사
+//         수리 회수가 3회 이상인지 확인 -> RepairInfo 테이블 검사
+else if (e.getSource() == s4) {
+	listPn.removeAll();
+	btnPn.removeAll();
+
+	ArrayList<Integer> carIDList = new ArrayList<Integer>();
+	ArrayList<Integer> rentCountList = new ArrayList<Integer>();
+	ArrayList<Integer> repairCountList = new ArrayList<Integer>();
+
+	txtResult.setText("폐차예정차량\t차량번호\t제조연도\t대여회수\t수리회수\n");
+
+	rs = stmt.executeQuery("select id from campingcars;");
+	while (rs.next()) {
+	   carIDList.add(rs.getInt(1));
+	}
+
+	rs = stmt.executeQuery("select carID from carRentInfo;");
+	while (rs.next()) {
+	   rentCountList.add(rs.getInt(1));
+	}
+
+	rs = stmt.executeQuery("select carID from RepairInfo;");
+	while (rs.next()) {
+	   repairCountList.add(rs.getInt(1));
+	}
+
+	for (int i = 0; i < carIDList.size(); ++i) {
+//               if(rentCountList.get(i) >= 5 && repairCountList.get(i) >= 3 ) {
+	   if (rentCountList.get(i) >= 1 && repairCountList.get(i) >= 1) {
+		  rs = stmt.executeQuery("select * from campingcars where id = " + carIDList.get(i) + ";");
+		  while (rs.next()) {
+			 String str = "" + rs.getString(2) + "\t" + rs.getString(3) + "\t" + rs.getInt(6) + "\t"
+				   + rentCountList.get(i) + "\t" + repairCountList.get(i);
+			 txtResult.append(str);
+		  }
+	   }
+	}
+	System.out.println(txtResult);
+	listPn.add(txtResult);
+	listPn.revalidate();
+	listPn.repaint();
+ }
 			}
 			catch (Exception e2) {
 				System.out.println();

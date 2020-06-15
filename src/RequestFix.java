@@ -37,7 +37,7 @@ public class RequestFix {
     public void init(JPanel btnPn) {
 		JButton submitBtn = new JButton("입력");
 		
-		JTextField input1 = new JTextField("리스트 번호");
+		JTextField input1 = new JTextField("고유대여 번호");
 		JTextField input2 = new JTextField("캠핑카 정비소 ID");
 		JTextField input3 = new JTextField("정비 내역");
 		JTextField input4 = new JTextField("수리 비용");
@@ -54,12 +54,13 @@ public class RequestFix {
 
 		submitBtn.addActionListener( new ActionListener(){
 			String str;
+			int primaryID;
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(input1.getText());
 				int carID;
 				int scID = Integer.parseInt(input2.getText());
-				String licenseNum;
 				int cpID;
+				String licenseNum;
 				String repairDetail = (input3.getText());
 				String repairDate;
 				int repairCost = Integer.parseInt(input4.getText());
@@ -71,29 +72,49 @@ public class RequestFix {
 					stmt = con.createStatement();
 					rs = stmt.executeQuery("select * from CarRentInfo where id = " + id);
 					while(rs.next()){
+						primaryID = rs.getInt(1);
+						System.out.println((primaryID));
 						carID = rs.getInt(2);
 						licenseNum = rs.getString(3);
 						cpID = rs.getInt(4);
 						repairDate = addDate(rs.getString(5), 0, 0,  rs.getInt(6) + 5);
 						paymentDeadline = addDate( repairDate, 0, 0,   5);
-						
-						str = "insert into RepairInfo (carID,scID,licenseNum,cpID,repairDetail,repairDate,repairCost,paymentDeadline,etcRepairDetail) VALUES (" +  
+						System.out.println(carID+","+licenseNum);
+						str = "insert into RepairInfo (carID,scID,cpID,licenseNum,repairDetail,repairDate,repairCost,paymentDeadline,etcRepairDetail) VALUES (" +  
 						+ carID + "," 
-						+ scID +  ",'" 
-						+ licenseNum + "'," 
+						+ scID +  "," 
 						+ cpID + ",'" 
+						+ licenseNum + "','" 
 						+ repairDetail + "','"
 						+ repairDate + "',"
 						+ repairCost + ",'"
 						+ paymentDeadline + "','"
 						+ etcRepairDetail + "')";
-						//System.out.println(str);
+						// System.out.println(str);
 						
 						// String str2 = rs.getInt(1) + "\t" + rs.getInt(2) + "\t" + rs.getString(3) + "\t"
 						// + rs.getInt(4) + "\t" + rs.getString(5) + "\t" + rs.getInt(6) 
 						// + "\t" + rs.getInt(7) + "\t" + rs.getString(8) + "\t" + rs.getInt(9) +"\t" + rs.getString(10) +"\n";
 						// System.out.println(str2 + "\n");
 					}					
+				}catch (Exception e2) {
+					System.out.println("쿼리 읽기 실패 :" + e2);
+				}finally {
+					try {
+					if (rs != null)
+						rs.close();
+					if (stmt != null)
+						stmt.close();
+					if (con != null)
+						con.close();
+					} catch (Exception e3) {
+					// TODO: handle exception
+					}
+				}
+				try{
+					conDB();
+					stmt = con.createStatement();
+					stmt.executeUpdate("delete from carchecklist where rentInfoID = " + primaryID);				
 				}catch (Exception e2) {
 					System.out.println("쿼리 읽기 실패 :" + e2);
 				}finally {
