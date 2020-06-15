@@ -1,4 +1,4 @@
-public class createTableQuery {
+public class CreateTableQuery {
     static String tableName[] = {"Companies","CampingCars","Customers","ServiceCenters",
                "CarRentInfo","CarCheckList","RepairInfo"};
     

@@ -118,16 +118,16 @@ public class AdminFrame extends JFrame implements ActionListener {
 				// 테이블 존재시 삭제
 				for(int i=0;i<7;i++){
 					stmt.executeUpdate("SET foreign_key_checks = 0");
-					stmt.executeUpdate("drop table if exists " + createTableQuery.tableName[i]);
+					stmt.executeUpdate("drop table if exists " + CreateTableQuery.tableName[i]);
 					stmt.executeUpdate("SET foreign_key_checks = 1");
 				}
 				//테이블 생성
 				for(int i=0;i<7;i++){
-					stmt.executeUpdate(createTableQuery.create[i]);
+					stmt.executeUpdate(CreateTableQuery.create[i]);
 				}
 				 //데이터 추가
 				for(int i=0;i<6;i++){
-					stmt.executeUpdate(createTableQuery.insertSql[i]);
+					stmt.executeUpdate(CreateTableQuery.insertSql[i]);
 				}
 			}
 			else if(e.getSource() == companyBtn) {
