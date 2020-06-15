@@ -130,7 +130,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 					stmt.executeUpdate(CreateTableQuery.create[i]);
 				}
 				// 데이터 추가
-				for (int i = 0; i < 6; i++) {
+				for (int i = 0; i < 7; i++) {
 					stmt.executeUpdate(CreateTableQuery.insertSql[i]);
 				}
 			} else if (e.getSource() == companyBtn) {
@@ -242,7 +242,7 @@ public class AdminFrame extends JFrame implements ActionListener {
 				ArrayList<String> licenseNumInRepairInfo = new ArrayList<>();
 				ArrayList<String> primeCustomer = new ArrayList<>();
 
-				txtResult.setText("운전면허증번호\t\t고객명\t고객 주소\t\t고객 전화번호\t고객 이메일\n");
+				txtResult.setText("운전면허증번호\t고객명\t고객 주소\t\t고객 전화번호\t고객 이메일\n");
 				rs = stmt.executeQuery("select licenseNum from CarRentInfo");
 				while (rs.next()) {
 					licenseNumInRentInfor.add(rs.getString(1));
@@ -334,52 +334,57 @@ public class AdminFrame extends JFrame implements ActionListener {
 			}
 //         폐차
 //         사용 회수가 5회 이상이고 수리를 3회 이상 받아 더 이상 캠핑카로써의 메리트가 없어 폐차 예정인 목록 출력하는 버튼
-//         사용 회수가 5회 이상인지 확인 -> CarRentInfo 테이블 검사
-//         수리 회수가 3회 이상인지 확인 -> RepairInfo 테이블 검사
-			else if (e.getSource() == s4) {
-				listPn.removeAll();
-				btnPn.removeAll();
-			
-				ArrayList<Integer> keysRent = new ArrayList<Integer>();
-				ArrayList<Integer> keysRepair = new ArrayList<Integer>();
-				ArrayList<Integer> keys = new ArrayList<Integer>();
-				HashMap<Integer, Integer> rentCountList = new HashMap<Integer, Integer>();
-				HashMap<Integer, Integer> repairCountList = new HashMap<Integer, Integer>();
-			
-				txtResult.setText("폐차예정차량\t차량번호\t제조연도\t대여회수\t수리회수\n");
-			
-				rs = stmt.executeQuery("select carID from carRentInfo;");
-				while (rs.next()) {
-				   keysRent.add(rs.getInt(1));
-				   if (rentCountList.containsKey(rs.getInt(1)))
-					  rentCountList.put(rs.getInt(1), rentCountList.get(rs.getInt(1)) + 1);
-				   else
-					  rentCountList.put(rs.getInt(1), 1);
-				}
-			
-				rs = stmt.executeQuery("select carID from RepairInfo;");
-				while (rs.next()) {
-				   keysRepair.add(rs.getInt(1));
-				   if (repairCountList.containsKey(rs.getInt(1)))
-					  repairCountList.put(rs.getInt(1), repairCountList.get(rs.getInt(1)) + 1);
-				   else
-					  repairCountList.put(rs.getInt(1), 1);
-				}
-			
-				for (int i = 0; i < keysRent.size(); ++i) {
-				   if (rentCountList.get(keysRent.get(i)) >= 5 && repairCountList.get(keysRent.get(i)) >= 3) {
-					  rs = stmt.executeQuery("select * from campingcars where id = " + keysRent.get(i) + ";");
-					  while (rs.next()) {
-						 String str = "" + rs.getString(2) + "\t" + rs.getString(3) + "\t" + rs.getInt(6) + "\t"
-							   + rentCountList.get(keysRent.get(i)) + "\t" + repairCountList.get(keysRent.get(i));
-						 txtResult.append(str);
-					  }
-				   }
-				}
-				listPn.add(txtResult);
-				listPn.revalidate();
-				listPn.repaint();
+//         사용 회수가 3회 이상인지 확인 -> CarRentInfo 테이블 검사
+//         수리 회수가 2회 이상인지 확인 -> RepairInfo 테이블 검사
+else if (e.getSource() == s4) {
+	listPn.removeAll();
+	btnPn.removeAll();
+
+	ArrayList<Integer> keysRent = new ArrayList<Integer>();
+	ArrayList<Integer> keysRepair = new ArrayList<Integer>();
+	HashMap<Integer, Integer> rentCountList = new HashMap<Integer, Integer>();
+	HashMap<Integer, Integer> repairCountList = new HashMap<Integer, Integer>();
+
+	txtResult.setText("폐차예정차량\t차량번호\t제조연도\t대여회수\t수리회수\n");
+
+	rs = stmt.executeQuery("select carID from carRentInfo;");
+	while (rs.next()) {
+	   if (!keysRent.contains(rs.getInt(1)))
+		  keysRent.add(rs.getInt(1));
+	   if (rentCountList.containsKey(rs.getInt(1)))
+		  rentCountList.put(rs.getInt(1), rentCountList.get(rs.getInt(1)) + 1);
+	   else
+		  rentCountList.put(rs.getInt(1), 1);
+	}
+
+	rs = stmt.executeQuery("select carID from RepairInfo;");
+	while (rs.next()) {
+	   if (!keysRepair.contains(rs.getInt(1)))
+		  keysRepair.add(rs.getInt(1));
+	   if (repairCountList.containsKey(rs.getInt(1)))
+		  repairCountList.put(rs.getInt(1), repairCountList.get(rs.getInt(1)) + 1);
+	   else
+		  repairCountList.put(rs.getInt(1), 1);
+	}
+
+	for (int i = 0; i < keysRent.size(); ++i) {
+	   if (repairCountList.containsKey(keysRent.get(i))) {
+		  if (rentCountList.get(keysRent.get(i)) >= 2 && repairCountList.get(keysRent.get(i)) >= 1) {
+			 rs = stmt.executeQuery("select * from campingcars where id = " + keysRent.get(i) + ";");
+			 while (rs.next()) {
+				String str = "" + rs.getString(2) + "\t" + rs.getString(3) + "\t" + rs.getInt(6) + "\t"
+					  + rentCountList.get(keysRent.get(i)) + "\t"
+					  + repairCountList.get(keysRent.get(i))+'\n';
+				txtResult.append(str);
 			 }
+		  }
+	   }
+	}
+	
+	listPn.add(txtResult);
+	listPn.revalidate();
+	listPn.repaint();
+ }
 		} catch (Exception e2) {
 			System.out.println();
 			System.out.println("쿼리 읽기 실패 :" + e2);
